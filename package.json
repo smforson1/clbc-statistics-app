@@ -1,0 +1,42 @@
+{
+  "name": "ecclesia-link",
+  "version": "1.0.0",
+  "description": "University Youth Church Management System",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.90.0",
+    "autoprefixer": "^10.4.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.0.0",
+    "jspdf": "^4.0.0",
+    "lucide-react": "^0.344.0",
+    "next": "^14.2.0",
+    "postcss": "^8.4.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-hook-form": "^7.70.0",
+    "recharts": "^2.10.0",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss": "^3.4.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^15.0.0",
+    "typescript": "^5.0.0"
+  }
+}
