@@ -49,7 +49,7 @@ import {
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
-const COLORS = ['#7C3AED', '#2563EB', '#EAB308', '#F59E0B', '#10B981', '#EF4444'];
+const COLORS = ['#001D86', '#D5AB45', '#2563EB', '#EAB308', '#10B981', '#EF4444'];
 
 export default function ResponsesPage() {
     const { id } = useParams();
@@ -150,7 +150,7 @@ export default function ResponsesPage() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#001D86]"></div>
             </div>
         );
     }
@@ -172,7 +172,7 @@ export default function ResponsesPage() {
                         <FileSpreadsheet size={18} />
                         Export CSV
                     </Button>
-                    <Button onClick={handleExportPDF} className="gap-2 rounded-xl bg-violet-600 hover:bg-violet-700 shadow-md">
+                    <Button onClick={handleExportPDF} className="gap-2 rounded-xl bg-[#001D86] hover:bg-[#D5AB45] shadow-md transition-all">
                         <FileText size={18} />
                         Export PDF
                     </Button>
@@ -181,7 +181,7 @@ export default function ResponsesPage() {
 
             <Tabs defaultValue="responses" className="w-full">
                 <TabsList className="bg-white p-1 rounded-xl shadow-sm border border-gray-100 mb-6">
-                    <TabsTrigger value="responses" className="rounded-lg gap-2 data-[state=active]:bg-violet-50 data-[state=active]:text-violet-700">
+                    <TabsTrigger value="responses" className="rounded-lg gap-2 data-[state=active]:bg-blue-50 data-[state=active]:text-[#001D86]">
                         <TableIcon size={16} /> Table View
                     </TabsTrigger>
                     <TabsTrigger value="analytics" className="rounded-lg gap-2 data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700">
@@ -196,7 +196,7 @@ export default function ResponsesPage() {
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <Input
                                     placeholder="Search within responses..."
-                                    className="pl-10 rounded-xl bg-white focus-visible:ring-violet-500"
+                                    className="pl-10 rounded-xl bg-white focus-visible:ring-[#001D86]"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
@@ -232,7 +232,7 @@ export default function ResponsesPage() {
                                             </TableRow>
                                         ) : (
                                             responses.map((r) => (
-                                                <TableRow key={r.id} className="hover:bg-violet-50/30 transition-colors">
+                                                <TableRow key={r.id} className="hover:bg-blue-50/30 transition-colors">
                                                     <TableCell className="whitespace-nowrap px-6 py-4 font-medium text-gray-600">
                                                         {new Date(r.submitted_at).toLocaleString()}
                                                     </TableCell>
@@ -283,7 +283,7 @@ export default function ResponsesPage() {
                                                     <XAxis dataKey="name" axisLine={false} tickLine={false} />
                                                     <YAxis axisLine={false} tickLine={false} />
                                                     <Tooltip />
-                                                    <Bar dataKey="value" fill="#7C3AED" radius={[4, 4, 0, 0]} barSize={40} />
+                                                    <Bar dataKey="value" fill="#001D86" radius={[4, 4, 0, 0]} barSize={40} />
                                                 </BarChart>
                                             )}
                                         </ResponsiveContainer>

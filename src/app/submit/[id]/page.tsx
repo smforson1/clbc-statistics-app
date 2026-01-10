@@ -133,7 +133,7 @@ export default function PublicFormPage() {
             <div className="max-w-xl mx-auto space-y-8">
                 <div className="text-center space-y-4">
                     <div className="mx-auto h-24 w-24 bg-white p-1 rounded-full flex items-center justify-center shadow-xl transform rotate-3 overflow-hidden border-4 border-white">
-                        <img src="/clbc-logo.jpeg" alt="CLBC Logo" className="w-full h-full object-cover" />
+                        <img src="/clbc-logo.jpg" alt="CLBC Logo" className="w-full h-full object-cover" />
                     </div>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-black text-[#001D86] tracking-tight">{form.title}</h1>
@@ -159,7 +159,7 @@ export default function PublicFormPage() {
 
                                     {field.type === 'textarea' ? (
                                         <textarea
-                                            className="w-full p-4 rounded-2xl border border-gray-200 bg-white/50 focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 transition-all outline-none resize-none"
+                                            className="w-full p-4 rounded-2xl border border-gray-200 bg-white/50 focus:ring-4 focus:ring-[#001D86]/10 focus:border-[#001D86] transition-all outline-none resize-none"
                                             placeholder={field.placeholder}
                                             rows={4}
                                             required={field.required}

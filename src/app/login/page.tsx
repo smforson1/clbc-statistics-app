@@ -46,7 +46,7 @@ export default function LoginPage() {
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
                     <div className="mx-auto h-24 w-24 bg-white p-1 rounded-full shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300 overflow-hidden border-4 border-white">
-                        <img src="/clbc-logo.jpeg" alt="CLBC Logo" className="w-full h-full object-cover" />
+                        <img src="/clbc-logo.jpg" alt="CLBC Logo" className="w-full h-full object-cover" />
                     </div>
                     <h2 className="mt-6 text-3xl font-black text-gray-900 tracking-tight">
                         CLBC Statistics

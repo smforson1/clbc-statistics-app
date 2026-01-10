@@ -54,7 +54,7 @@ export function Sidebar() {
             <Button
                 variant="ghost"
                 size="icon"
-                className="fixed top-4 left-4 z-50 lg:hidden text-gray-600 hover:text-violet-600"
+                className="fixed top-4 left-4 z-50 lg:hidden text-gray-600 hover:text-[#D5AB45]"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -76,7 +76,7 @@ export function Sidebar() {
                 <div className="p-6 border-b border-white/5">
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-white p-0.5 rounded-full flex items-center justify-center shadow-lg overflow-hidden flex-shrink-0">
-                            <img src="/clbc-logo.jpeg" alt="Logo" className="w-full h-full object-cover" />
+                            <img src="/clbc-logo.jpg" alt="Logo" className="w-full h-full object-cover" />
                         </div>
                         {isOpen && (
                             <div className="flex flex-col">

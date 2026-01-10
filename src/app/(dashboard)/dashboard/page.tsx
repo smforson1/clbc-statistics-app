@@ -47,7 +47,7 @@ export default function DashboardPage() {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#D5AB45] rounded-full blur-[100px] opacity-20 -mr-32 -mt-32" />
                 <div className="relative z-10 flex items-center gap-6">
                     <div className="h-20 w-20 bg-white p-1 rounded-full shadow-2xl overflow-hidden border-4 border-white flex-shrink-0">
-                        <img src="/clbc-logo.jpeg" alt="CLBC" className="w-full h-full object-cover" />
+                        <img src="/clbc-logo.jpg" alt="CLBC" className="w-full h-full object-cover" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-black tracking-tight">Dashboard Overview</h1>
@@ -101,7 +101,7 @@ export default function DashboardPage() {
                 <Card className="shadow-sm border-none bg-white/50 backdrop-blur-sm">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <TrendingUp className="text-violet-600" size={20} />
+                            <TrendingUp className="text-[#001D86]" size={20} />
                             Attendance Trend
                         </CardTitle>
                         <CardDescription>Last 7 weeks performance</CardDescription>
@@ -112,8 +112,8 @@ export default function DashboardPage() {
                                 <BarChart data={data}>
                                     <defs>
                                         <linearGradient id="colorAttendance" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#7C3AED" stopOpacity={0.8} />
-                                            <stop offset="95%" stopColor="#2563EB" stopOpacity={0.8} />
+                                            <stop offset="5%" stopColor="#001D86" stopOpacity={0.8} />
+                                            <stop offset="95%" stopColor="#000C33" stopOpacity={0.8} />
                                         </linearGradient>
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
@@ -154,9 +154,9 @@ export default function DashboardPage() {
                     <CardContent>
                         <div className="space-y-4">
                             {recentActivity.map((activity) => (
-                                <div key={activity.id} className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-violet-200 transition-colors group">
+                                <div key={activity.id} className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-blue-200 transition-colors group">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center text-violet-600">
+                                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-[#001D86]">
                                             <FileText size={20} />
                                         </div>
                                         <div>
@@ -164,7 +164,7 @@ export default function DashboardPage() {
                                             <p className="text-sm text-gray-500">{activity.responses} responses • {activity.date}</p>
                                         </div>
                                     </div>
-                                    <Button variant="ghost" size="sm" className="text-violet-600 hover:bg-violet-50 font-medium">
+                                    <Button variant="ghost" size="sm" className="text-[#001D86] hover:bg-blue-50 font-bold">
                                         View
                                     </Button>
                                 </div>

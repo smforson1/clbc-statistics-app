@@ -120,7 +120,7 @@ export default function BroadcastPage() {
 
             <Tabs defaultValue="compose" className="w-full">
                 <TabsList className="bg-white p-1 rounded-xl shadow-sm border border-gray-100 mb-6">
-                    <TabsTrigger value="compose" className="rounded-lg gap-2 data-[state=active]:bg-violet-50 data-[state=active]:text-violet-700">
+                    <TabsTrigger value="compose" className="rounded-lg gap-2 data-[state=active]:bg-blue-50 data-[state=active]:text-[#001D86]">
                         <Send size={16} /> Compose Broadcast
                     </TabsTrigger>
                     <TabsTrigger value="history" className="rounded-lg gap-2 data-[state=active]:bg-gray-50 data-[state=active]:text-gray-700">
@@ -135,10 +135,10 @@ export default function BroadcastPage() {
                             <CardHeader className="bg-gray-50/50 border-b border-gray-100 px-6 py-4">
                                 <div className="flex justify-between items-center">
                                     <div className="flex items-center gap-2">
-                                        <Users className="text-violet-600" size={20} />
+                                        <Users className="text-[#001D86]" size={20} />
                                         <CardTitle className="text-lg">Recipients</CardTitle>
                                     </div>
-                                    <Badge variant="secondary" className="bg-violet-100 text-violet-700">
+                                    <Badge variant="secondary" className="bg-blue-100 text-[#001D86]">
                                         {selectedRecipients.length} Selected
                                     </Badge>
                                 </div>
@@ -158,7 +158,7 @@ export default function BroadcastPage() {
                                         <label className="flex items-center gap-2 text-xs font-bold text-gray-500 cursor-pointer">
                                             <input
                                                 type="checkbox"
-                                                className="rounded border-gray-300 text-violet-600 focus:ring-violet-500"
+                                                className="rounded border-gray-300 text-[#001D86] focus:ring-[#001D86]"
                                                 checked={selectedRecipients.length === filteredMembers.length && filteredMembers.length > 0}
                                                 onChange={(e) => handleSelectAll(e.target.checked)}
                                             />
@@ -176,14 +176,14 @@ export default function BroadcastPage() {
                                             className={cn(
                                                 "flex items-center gap-3 p-3 rounded-2xl transition-all cursor-pointer group",
                                                 selectedRecipients.includes(member.id)
-                                                    ? "bg-violet-50 border border-violet-100"
+                                                    ? "bg-blue-50 border border-blue-100"
                                                     : "hover:bg-gray-50 border border-transparent"
                                             )}
                                             onClick={() => handleRecipientToggle(member.id)}
                                         >
                                             <input
                                                 type="checkbox"
-                                                className="rounded border-gray-300 text-violet-600 focus:ring-violet-500"
+                                                className="rounded border-gray-300 text-[#001D86] focus:ring-[#001D86]"
                                                 checked={selectedRecipients.includes(member.id)}
                                                 readOnly
                                             />
@@ -209,7 +209,7 @@ export default function BroadcastPage() {
                         <Card className="lg:col-span-2 border-none shadow-sm rounded-3xl bg-white overflow-hidden h-fit">
                             <CardHeader className="bg-gray-50/50 border-b border-gray-100 px-6 py-4">
                                 <div className="flex items-center gap-2">
-                                    <MessageSquare className="text-violet-600" size={20} />
+                                    <MessageSquare className="text-[#001D86]" size={20} />
                                     <CardTitle className="text-lg">Message Content</CardTitle>
                                 </div>
                             </CardHeader>
@@ -264,14 +264,14 @@ export default function BroadcastPage() {
                                         </span>
                                     </div>
                                     <textarea
-                                        className="w-full min-h-[250px] p-6 rounded-2xl border border-gray-200 bg-white/50 focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 transition-all outline-none resize-none text-gray-800"
+                                        className="w-full min-h-[250px] p-6 rounded-2xl border border-gray-200 bg-white/50 focus:ring-4 focus:ring-[#001D86]/10 focus:border-[#001D86] transition-all outline-none resize-none text-gray-800"
                                         placeholder={`Enter your ${messageType} message here...`}
                                         value={messageContent}
                                         onChange={(e) => setMessageContent(e.target.value)}
                                     />
                                     <div className="flex flex-wrap gap-2">
                                         <p className="text-[10px] text-gray-400 font-bold uppercase">Insert Labels:</p>
-                                        <button className="text-[10px] font-bold text-violet-600 bg-violet-50 px-2 py-1 rounded" onClick={() => setMessageContent(prev => prev + ' {fullname}')}>NAME</button>
+                                        <button className="text-[10px] font-bold text-[#001D86] bg-blue-50 px-2 py-1 rounded" onClick={() => setMessageContent(prev => prev + ' {fullname}')}>NAME</button>
                                         <button className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded" onClick={() => setMessageContent(prev => prev + ' {church}')}>CHURCH</button>
                                         <button className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded" onClick={() => setMessageContent(prev => prev + ' {date}')}>DATE</button>
                                     </div>
@@ -279,7 +279,7 @@ export default function BroadcastPage() {
                             </CardContent>
                             <CardFooter className="p-8 pt-0">
                                 <Button
-                                    className="w-full h-16 bg-gradient-to-r from-violet-600 to-blue-600 rounded-[1.5rem] text-xl font-black shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all disabled:opacity-50"
+                                    className="w-full h-16 bg-[#001D86] hover:bg-[#D5AB45] rounded-[1.5rem] text-xl font-black shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all disabled:opacity-50"
                                     onClick={handleSend}
                                     disabled={isSending || selectedRecipients.length === 0}
                                 >
@@ -331,7 +331,7 @@ export default function BroadcastPage() {
                                                             <Clock size={12} />
                                                             {format(new Date(msg.sent_at), 'MMM d, h:mm a')}
                                                         </span>
-                                                        <span className="text-xs text-violet-600 font-bold">
+                                                        <span className="text-xs text-[#001D86] font-bold">
                                                             {msg.recipients?.length || 0} Recipients
                                                         </span>
                                                     </div>

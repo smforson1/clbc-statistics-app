@@ -90,7 +90,7 @@ export default function SettingsPage() {
                                 <Input defaultValue="Accra, Ghana" className="rounded-xl" />
                             </div>
                             <div className="pt-4 flex justify-end">
-                                <Button onClick={handleSave} disabled={isSaving} className="bg-violet-600 rounded-xl px-8">
+                                <Button onClick={handleSave} disabled={isSaving} className="bg-[#001D86] hover:bg-[#D5AB45] rounded-xl px-8 transition-all">
                                     {isSaving ? <RefreshCw className="animate-spin mr-2" size={18} /> : <Save className="mr-2" size={18} />}
                                     Save Changes
                                 </Button>
@@ -107,7 +107,7 @@ export default function SettingsPage() {
                         </CardHeader>
                         <CardContent className="p-8 space-y-6">
                             <div className="flex items-center gap-6 mb-8">
-                                <div className="h-24 w-24 bg-gradient-to-br from-violet-500 to-blue-500 rounded-3xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                                <div className="h-24 w-24 bg-gradient-to-br from-[#001D86] to-blue-500 rounded-3xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                                     A
                                 </div>
                                 <div>
@@ -126,7 +126,7 @@ export default function SettingsPage() {
                                 </div>
                             </div>
                             <div className="pt-4 flex justify-end">
-                                <Button onClick={handleSave} className="bg-violet-600 rounded-xl px-8">Update Profile</Button>
+                                <Button onClick={handleSave} className="bg-[#001D86] hover:bg-[#D5AB45] rounded-xl px-8 transition-all">Update Profile</Button>
                             </div>
                         </CardContent>
                     </Card>

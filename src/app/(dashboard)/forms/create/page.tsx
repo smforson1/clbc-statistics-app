@@ -140,7 +140,7 @@ export default function CreateFormPage() {
                         Save Draft
                     </Button>
                     <Button
-                        className="bg-gradient-to-r from-violet-600 to-blue-600 shadow-md hover:shadow-lg"
+                        className="bg-[#001D86] hover:bg-[#D5AB45] shadow-md hover:shadow-lg rounded-xl transition-all"
                         onClick={() => saveForm('active')}
                         disabled={isSaving}
                     >
@@ -153,7 +153,7 @@ export default function CreateFormPage() {
             <Tabs defaultValue="builder" value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="flex justify-center mb-6">
                     <TabsList className="bg-white p-1 rounded-xl shadow-sm border border-gray-100">
-                        <TabsTrigger value="builder" className="rounded-lg gap-2 data-[state=active]:bg-violet-50 data-[state=active]:text-violet-700">
+                        <TabsTrigger value="builder" className="rounded-lg gap-2 data-[state=active]:bg-blue-50 data-[state=active]:text-[#001D86]">
                             <Settings2 size={16} /> Builder
                         </TabsTrigger>
                         <TabsTrigger value="preview" className="rounded-lg gap-2 data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700">
@@ -184,7 +184,7 @@ export default function CreateFormPage() {
                                         <div className="space-y-2">
                                             <Label>Event Type</Label>
                                             <select
-                                                className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm focus:ring-2 focus:ring-violet-500 appearance-none"
+                                                className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm focus:ring-2 focus:ring-[#001D86] appearance-none"
                                                 value={eventType}
                                                 onChange={(e) => setEventType(e.target.value)}
                                             >
@@ -230,7 +230,7 @@ export default function CreateFormPage() {
                                 ) : (
                                     <div className="space-y-4">
                                         {fields.map((field, index) => (
-                                            <Card key={field.id} className="border-none shadow-sm rounded-2xl bg-white overflow-hidden group hover:ring-2 hover:ring-violet-200 transition-all">
+                                            <Card key={field.id} className="border-none shadow-sm rounded-2xl bg-white overflow-hidden group hover:ring-2 hover:ring-blue-100 transition-all">
                                                 <CardContent className="p-4 sm:p-6">
                                                     <div className="flex items-start gap-4">
                                                         <div className="mt-2 cursor-grab active:cursor-grabbing text-gray-300">
@@ -243,7 +243,7 @@ export default function CreateFormPage() {
                                                                     <Input
                                                                         value={field.label}
                                                                         onChange={(e) => updateField(field.id, { label: e.target.value })}
-                                                                        className="border-none bg-gray-50 focus-visible:ring-violet-500 font-medium"
+                                                                        className="border-none bg-gray-50 focus-visible:ring-[#001D86] font-medium"
                                                                     />
                                                                 </div>
                                                                 <div className="flex items-center gap-4 pt-4 sm:pt-0">
@@ -278,7 +278,7 @@ export default function CreateFormPage() {
                                                                     <Label className="text-xs text-gray-400 font-bold uppercase">Type: <Badge variant="secondary" className="ml-1 text-[10px]">{field.type}</Badge></Label>
                                                                     {['select', 'radio'].includes(field.type) && (
                                                                         <div className="flex gap-2 items-center">
-                                                                            <span className="text-xs text-violet-600 font-medium whitespace-nowrap">Edit Options</span>
+                                                                            <span className="text-xs text-[#001D86] font-medium whitespace-nowrap">Edit Options</span>
                                                                             <HelpCircle size={14} className="text-gray-300" />
                                                                         </div>
                                                                     )}
@@ -306,21 +306,21 @@ export default function CreateFormPage() {
                                         <Button
                                             key={item.type}
                                             variant="ghost"
-                                            className="justify-start gap-4 h-12 px-4 rounded-xl hover:bg-violet-50 hover:text-violet-700 group transition-all"
+                                            className="justify-start gap-4 h-12 px-4 rounded-xl hover:bg-blue-50 hover:text-[#001D86] group transition-all"
                                             onClick={() => addField(item.type)}
                                         >
-                                            <div className="p-1.5 bg-gray-100 rounded-lg group-hover:bg-violet-100 group-hover:text-violet-600 transition-colors">
+                                            <div className="p-1.5 bg-gray-100 rounded-lg group-hover:bg-blue-100 group-hover:text-[#001D86] transition-colors">
                                                 <item.icon size={18} />
                                             </div>
                                             <span className="font-semibold text-sm">{item.label}</span>
-                                            <Plus size={16} className="ml-auto opacity-0 group-hover:opacity-100 text-violet-400" />
+                                            <Plus size={16} className="ml-auto opacity-0 group-hover:opacity-100 text-blue-400" />
                                         </Button>
                                     ))}
                                 </CardContent>
                             </Card>
 
                             {/* Tips Card */}
-                            <Card className="border-none shadow-sm rounded-3xl bg-gradient-to-br from-violet-600 to-blue-600 text-white p-6">
+                            <Card className="border-none shadow-sm rounded-3xl bg-gradient-to-br from-[#001D86] to-blue-900 text-white p-6">
                                 <h4 className="font-bold flex items-center gap-2 mb-2">
                                     <HelpCircle size={18} /> Pro Tip
                                 </h4>
@@ -335,7 +335,7 @@ export default function CreateFormPage() {
                 <TabsContent value="preview" className="mt-0">
                     <div className="max-w-2xl mx-auto py-12 px-4 bg-white/50 rounded-3xl border-2 border-dashed border-gray-200">
                         <div className="text-center mb-10">
-                            <div className="mx-auto h-12 w-12 bg-gradient-to-br from-violet-600 to-blue-600 rounded-xl flex items-center justify-center text-white mb-4">
+                            <div className="mx-auto h-12 w-12 bg-gradient-to-br from-[#001D86] to-blue-900 rounded-xl flex items-center justify-center text-white mb-4">
                                 <Church size={28} />
                             </div>
                             <h2 className="text-2xl font-bold text-gray-900">{title || "Form Title"}</h2>
@@ -369,7 +369,7 @@ export default function CreateFormPage() {
                                 <p className="text-center text-gray-400 italic">No fields added yet</p>
                             )}
 
-                            <Button className="w-full h-14 bg-violet-600 rounded-2xl text-lg font-bold shadow-lg opacity-50 cursor-not-allowed">
+                            <Button className="w-full h-14 bg-[#001D86] rounded-2xl text-lg font-bold shadow-lg opacity-50 cursor-not-allowed">
                                 Submit Response
                             </Button>
                         </div>

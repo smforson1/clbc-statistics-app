@@ -94,7 +94,7 @@ export default function QRPage() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#001D86]"></div>
             </div>
         );
     }
@@ -115,7 +115,7 @@ export default function QRPage() {
                 {/* QR Code Display Card */}
                 <Card className="border-none shadow-2xl rounded-[2.5rem] bg-white overflow-hidden flex flex-col items-center p-8">
                     <div className="w-full text-center mb-6 space-y-2">
-                        <div className="mx-auto h-12 w-12 bg-gradient-to-br from-violet-600 to-blue-600 rounded-xl flex items-center justify-center text-white mb-2 shadow-lg">
+                        <div className="mx-auto h-12 w-12 bg-gradient-to-br from-[#001D86] to-[#D5AB45] rounded-xl flex items-center justify-center text-white mb-2 shadow-lg">
                             <Church size={28} />
                         </div>
                         <h2 className="text-xl font-bold text-gray-900">{form.title}</h2>
@@ -130,7 +130,7 @@ export default function QRPage() {
                             level="H"
                             includeMargin={true}
                             imageSettings={{
-                                src: "/church-logo.png", // Fallback if no logo
+                                src: "/clbc-logo.jpg", // New logo
                                 x: undefined,
                                 y: undefined,
                                 height: 48,
@@ -139,7 +139,7 @@ export default function QRPage() {
                             }}
                         />
                         <div className="absolute inset-x-0 -bottom-4 flex justify-center">
-                            <Badge className="bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-1 rounded-full shadow-lg border-2 border-white">
+                            <Badge className="bg-gradient-to-r from-[#001D86] to-[#D5AB45] px-4 py-1 rounded-full shadow-lg border-2 border-white">
                                 SCAN TO FILL
                             </Badge>
                         </div>
@@ -184,7 +184,7 @@ export default function QRPage() {
                         <ShareButton
                             icon={Mail}
                             label="Send via Email"
-                            color="bg-violet-600"
+                            color="bg-[#001D86]"
                             onClick={() => window.open(`mailto:?subject=${encodeURIComponent(form.title)}&body=${encodeURIComponent(shareUrl)}`)}
                         />
                         <Link href={`/submit/${id}`} target="_blank">

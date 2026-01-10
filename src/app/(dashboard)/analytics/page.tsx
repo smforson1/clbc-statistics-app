@@ -52,9 +52,9 @@ export default function AnalyticsPage() {
     ];
 
     const demographicsData = [
-        { name: 'Youth', value: 40, color: '#8b5cf6' },
+        { name: 'Youth', value: 40, color: '#001D86' },
         { name: 'Adults', value: 35, color: '#3b82f6' },
-        { name: 'Seniors', value: 15, color: '#f59e0b' },
+        { name: 'Seniors', value: 15, color: '#D5AB45' },
         { name: 'Children', value: 10, color: '#10b981' },
     ];
 
@@ -65,7 +65,7 @@ export default function AnalyticsPage() {
                     <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Church Analytics</h1>
                     <p className="text-gray-500 mt-1">Numerical insights into growth and engagement</p>
                 </div>
-                <Button className="bg-violet-600 hover:bg-violet-700">
+                <Button className="bg-[#001D86] hover:bg-[#D5AB45] rounded-xl transition-all">
                     <Download className="mr-2 h-4 w-4" /> Export Report
                 </Button>
             </div>
@@ -74,7 +74,7 @@ export default function AnalyticsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                     { label: 'Total Members', value: stats.totalMembers, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
-                    { label: 'Forms Created', value: stats.totalForms, icon: FileText, color: 'text-violet-600', bg: 'bg-violet-50' },
+                    { label: 'Forms Created', value: stats.totalForms, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
                     { label: 'Form Responses', value: stats.totalResponses, icon: Activity, color: 'text-emerald-600', bg: 'bg-emerald-50' },
                     { label: 'Monthly Growth', value: `+${stats.growthRate}%`, icon: TrendingUp, color: 'text-amber-600', bg: 'bg-amber-50' },
                 ].map((stat, i) => (
@@ -120,9 +120,9 @@ export default function AnalyticsPage() {
                                     <Line
                                         type="monotone"
                                         dataKey="attendance"
-                                        stroke="#8b5cf6"
+                                        stroke="#001D86"
                                         strokeWidth={4}
-                                        dot={{ r: 6, fill: '#8b5cf6', strokeWidth: 2, stroke: '#fff' }}
+                                        dot={{ r: 6, fill: '#001D86', strokeWidth: 2, stroke: '#fff' }}
                                         activeDot={{ r: 8, strokeWidth: 0 }}
                                     />
                                 </LineChart>

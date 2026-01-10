@@ -82,14 +82,14 @@ export default function PrayerRequestsAdminPage() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <Input
                         placeholder="Search requests..."
-                        className="pl-10 bg-gray-50/50 border-none focus-visible:ring-violet-500"
+                        className="pl-10 bg-gray-50/50 border-none focus-visible:ring-[#001D86]"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
                 <div className="flex items-center gap-2 w-full md:w-auto">
                     <select
-                        className="h-10 px-3 pr-8 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 appearance-none cursor-pointer"
+                        className="h-10 px-3 pr-8 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#001D86] appearance-none cursor-pointer"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
                     >
@@ -164,7 +164,7 @@ function PrayerRequestCard({ request, onStatusChange }: { request: any, onStatus
 
                         <div className="space-y-1">
                             <div className="flex items-center gap-2 text-gray-900 font-bold">
-                                <User size={14} className="text-violet-500" />
+                                <User size={14} className="text-[#001D86]" />
                                 {request.is_anonymous ? 'Anonymous Member' : request.requester_name}
                             </div>
                             <p className="text-gray-600 leading-relaxed text-sm">

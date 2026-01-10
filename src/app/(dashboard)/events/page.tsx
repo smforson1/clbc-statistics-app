@@ -85,7 +85,7 @@ export default function EventsPage() {
                 </div>
                 <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="bg-gradient-to-r from-violet-600 to-blue-600 hover:shadow-lg transition-all gap-2 px-6">
+                        <Button className="bg-[#001D86] hover:bg-[#D5AB45] hover:text-white transition-all gap-2 px-6 rounded-xl shadow-md">
                             <PlusCircle size={18} />
                             Schedule Event
                         </Button>
@@ -106,7 +106,7 @@ export default function EventsPage() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
                                         <Label>Event Type</Label>
-                                        <select name="event_type" className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm focus:ring-2 focus:ring-violet-500 appearance-none">
+                                        <select name="event_type" className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm focus:ring-2 focus:ring-[#001D86] appearance-none">
                                             <option>Sunday Service</option>
                                             <option>Midweek Service</option>
                                             <option>Youth Meeting</option>
@@ -128,7 +128,7 @@ export default function EventsPage() {
                                 </div>
                             </div>
                             <DialogFooter>
-                                <Button type="submit" className="w-full bg-violet-600 rounded-xl py-6 text-lg font-bold">Schedule Event</Button>
+                                <Button type="submit" className="w-full bg-[#001D86] hover:bg-[#D5AB45] rounded-xl py-6 text-lg font-bold transition-all">Schedule Event</Button>
                             </DialogFooter>
                         </form>
                     </DialogContent>
