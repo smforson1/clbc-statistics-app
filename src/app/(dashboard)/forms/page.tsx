@@ -224,10 +224,12 @@ function FormCard({ form, onDelete, onStatusChange }: { form: any, onDelete: (id
                 </div>
             </CardContent>
             <CardFooter className="bg-gray-50/50 p-4 gap-2 border-t border-gray-100">
-                <Button variant="secondary" className="flex-1 bg-white hover:bg-blue-50 hover:text-[#001D86] border border-gray-200 rounded-xl gap-2 font-medium">
-                    <QrCode size={16} />
-                    QR code
-                </Button>
+                <Link href={`/forms/${form.id}/qr`} className="flex-1">
+                    <Button variant="secondary" className="w-full bg-white hover:bg-blue-50 hover:text-[#001D86] border border-gray-200 rounded-xl gap-2 font-medium">
+                        <QrCode size={16} />
+                        QR code
+                    </Button>
+                </Link>
                 <Link href={`/forms/${form.id}/responses`} className="flex-1">
                     <Button className="w-full bg-white hover:bg-amber-50 text-amber-700 hover:text-amber-800 border border-amber-200 rounded-xl gap-2 font-medium">
                         <Eye size={16} />
