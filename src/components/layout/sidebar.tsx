@@ -137,6 +137,7 @@ export function Sidebar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
+                                onClick={() => setIsOpen(false)}
                                 className={cn(
                                     "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative",
                                     isActive
@@ -167,7 +168,10 @@ export function Sidebar() {
                             "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-red-500 hover:text-white font-bold",
                             !isOpen && "justify-center px-0"
                         )}
-                        onClick={handleLogout}
+                        onClick={() => {
+                            handleLogout();
+                            setIsOpen(false);
+                        }}
                     >
                         <LogOut size={22} className="flex-shrink-0" />
                         {isOpen && <span className="font-medium">Sign Out</span>}
