@@ -122,7 +122,7 @@ export default function QRPage() {
                         <p className="text-xs text-gray-400 font-medium tracking-widest uppercase print:text-sm print:text-gray-600">Christ Love Breed Church</p>
                     </div>
 
-                    <div className="relative p-6 bg-white rounded-3xl shadow-inner border-8 border-gray-50 mb-8 group hover:scale-105 transition-transform duration-500 print:border-none print:shadow-none print:p-0 print:mb-4">
+                    <div className="relative p-6 bg-white rounded-3xl shadow-inner border-8 border-gray-50 mb-4 group hover:scale-105 transition-transform duration-500 print:border-none print:shadow-none print:p-0 print:mb-2">
                         <QRCodeSVG
                             ref={qrRef}
                             value={shareUrl}
@@ -144,6 +144,11 @@ export default function QRPage() {
                                 SCAN TO FILL
                             </Badge>
                         </div>
+                    </div>
+
+                    <div className="text-center mb-4">
+                        <p className="text-[#001D86] font-bold text-lg">https://bit.ly/3YSsQq9</p>
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Short Link</p>
                     </div>
 
                     <div className="w-full flex gap-3 mt-4 print:hidden">
