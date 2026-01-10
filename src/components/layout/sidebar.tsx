@@ -37,7 +37,7 @@ const navItems = [
 
 export function Sidebar() {
     const pathname = usePathname();
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const supabase = createClient();
 
     useEffect(() => {
@@ -86,6 +86,24 @@ export function Sidebar() {
         }
     };
 
+    const handleLinkClick = () => {
+        if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+            setIsOpen(false);
+        }
+    };
+
+    const handleMouseEnter = () => {
+        if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+            setIsOpen(true);
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+            setIsOpen(false);
+        }
+    };
+
     return (
         <>
             {/* Mobile Menu Toggle */}
@@ -106,10 +124,14 @@ export function Sidebar() {
                 />
             )}
 
-            <aside className={cn(
-                "fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-[#000C33] flex flex-col shadow-2xl overflow-hidden",
-                isOpen ? "w-64" : "w-20 -translate-x-full lg:translate-x-0"
-            )}>
+            <aside
+                className={cn(
+                    "fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-[#000C33] flex flex-col shadow-2xl overflow-hidden",
+                    isOpen ? "w-64" : "w-20 -translate-x-full lg:translate-x-0"
+                )}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
                 {/* Logo Section */}
                 <div className="p-6 border-b border-white/5">
                     <div className="flex items-center gap-3">
@@ -137,7 +159,7 @@ export function Sidebar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                onClick={() => setIsOpen(false)}
+                                onClick={handleLinkClick}
                                 className={cn(
                                     "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative",
                                     isActive
@@ -170,7 +192,7 @@ export function Sidebar() {
                         )}
                         onClick={() => {
                             handleLogout();
-                            setIsOpen(false);
+                            handleLinkClick();
                         }}
                     >
                         <LogOut size={22} className="flex-shrink-0" />
