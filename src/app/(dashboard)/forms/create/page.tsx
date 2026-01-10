@@ -63,6 +63,7 @@ export default function CreateFormPage() {
     const [eventType, setEventType] = useState('Sunday Service');
     const [eventDate, setEventDate] = useState('');
     const [fields, setFields] = useState<FormField[]>([]);
+    const [allowMultipleSubmissions, setAllowMultipleSubmissions] = useState(true);
     const [activeTab, setActiveTab] = useState('builder');
     const [isSaving, setIsSaving] = useState(false);
     const router = useRouter();
@@ -105,6 +106,7 @@ export default function CreateFormPage() {
             event_date: eventDate || null,
             status,
             form_schema: fields,
+            allow_multiple_submissions: allowMultipleSubmissions,
             created_by: user?.id,
         };
 
@@ -202,6 +204,16 @@ export default function CreateFormPage() {
                                                 value={eventDate}
                                                 onChange={(e) => setEventDate(e.target.value)}
                                                 className="rounded-xl"
+                                            />
+                                        </div>
+                                        <div className="flex items-center justify-between p-4 bg-blue-50/50 rounded-2xl border border-blue-100 mt-2">
+                                            <div className="space-y-0.5">
+                                                <Label className="text-sm font-bold text-[#001D86]">Submission Limit</Label>
+                                                <p className="text-xs text-gray-500">Allow members to fill this form more than once?</p>
+                                            </div>
+                                            <Switch
+                                                checked={allowMultipleSubmissions}
+                                                onCheckedChange={setAllowMultipleSubmissions}
                                             />
                                         </div>
                                     </div>

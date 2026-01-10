@@ -18,6 +18,7 @@ export default function PublicFormPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [alreadySubmitted, setAlreadySubmitted] = useState(false);
     const [formData, setFormData] = useState<Record<string, any>>({});
     const supabase = createClient();
 
@@ -37,6 +38,15 @@ export default function PublicFormPage() {
             setForm(null);
         } else {
             setForm(data);
+
+            // Check for previous submission if multiple submissions are not allowed
+            if (data.allow_multiple_submissions === false) {
+                const hasSubmitted = localStorage.getItem(`submitted_${id}`);
+                if (hasSubmitted) {
+                    setAlreadySubmitted(true);
+                }
+            }
+
             // Initialize form data
             const initialData: Record<string, any> = {};
             data.form_schema.forEach((field: any) => {
@@ -66,6 +76,9 @@ export default function PublicFormPage() {
         if (error) {
             toast.error('Failed to submit form. Please try again.');
         } else {
+            if (form.allow_multiple_submissions === false) {
+                localStorage.setItem(`submitted_${id}`, 'true');
+            }
             setIsSubmitted(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -93,6 +106,30 @@ export default function PublicFormPage() {
                     >
                         Refresh
                     </Button>
+                </Card>
+            </div>
+        );
+    }
+
+    if (alreadySubmitted) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+                <Card className="max-w-md w-full border-none shadow-2xl rounded-[2.5rem] text-center p-12 bg-white overflow-hidden relative">
+                    <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-amber-500 to-orange-600" />
+                    <div className="bg-amber-50 h-20 w-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <AlertCircle className="h-12 w-12 text-amber-600" />
+                    </div>
+                    <h2 className="text-3xl font-black text-gray-900 tracking-tight">Already Submitted</h2>
+                    <p className="text-gray-500 mt-4 text-lg">
+                        You have already submitted a response for <strong>{form.title}</strong>.
+                        This form is limited to one response per person.
+                    </p>
+                    <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col gap-4">
+                        <div className="flex items-center justify-center gap-2 text-[#001D86] font-bold">
+                            <Church size={20} />
+                            <span>Christ Love Breed Church</span>
+                        </div>
+                    </div>
                 </Card>
             </div>
         );
