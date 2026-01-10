@@ -146,14 +146,14 @@ CREATE POLICY "Users can update own profile." ON public.profiles
   FOR UPDATE USING (auth.uid() = id);
 
 -- Forms
-CREATE POLICY "Forms are viewable by authenticated users." ON public.forms
-  FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "Anyone can view active forms"
+  ON public.forms FOR SELECT
+  USING (status = 'active');
 
-CREATE POLICY "Admins can insert forms." ON public.forms
-  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
-CREATE POLICY "Admins can update their own forms." ON public.forms
-  FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "Admins can manage all forms"
+  ON public.forms FOR ALL
+  TO authenticated
+  USING (true);
 
 -- Form Responses
 CREATE POLICY "Anyone can insert form responses." ON public.form_responses
