@@ -20,8 +20,17 @@ import {
     Clock,
     Mail,
     Phone,
-    HelpCircle
+    HelpCircle,
+    LayoutTemplate
 } from 'lucide-react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -57,6 +66,35 @@ const fieldTypes: { type: FieldType, icon: any, label: string }[] = [
     { type: 'radio', icon: List, label: 'Multiple Choice' },
 ];
 
+const templates = [
+    {
+        id: 'uni-outreach',
+        title: 'University Outreach',
+        description: 'Perfect for campus events targeting freshers, students, and alumni.',
+        icon: Rocket,
+        fields: [
+            { id: 'cat', type: 'radio', label: 'I am a...', required: true, options: ['Fresher', 'Continuing Student', 'Alumnus'] },
+            { id: 'name', type: 'text', label: 'Full Name', required: true, placeholder: 'Enter your full name' },
+            { id: 'phone', type: 'phone', label: 'Phone Number', required: true, placeholder: '050 000 0000' },
+            { id: 'course', type: 'text', label: 'Field/Course of Study', required: true, placeholder: 'e.g. Computer Science' },
+            { id: 'residence', type: 'text', label: 'Hall or Hostel of Residence', required: false, placeholder: 'e.g. Valco Hall' },
+            { id: 'grad_year', type: 'number', label: 'Graduation Year (Alumni only)', required: false, placeholder: '2024' },
+            { id: 'prayer', type: 'textarea', label: 'Prayer Request', required: false, placeholder: 'How can we pray with you?' },
+        ] as FormField[]
+    },
+    {
+        id: 'prayer-request',
+        title: 'Prayer Request',
+        description: 'Simple form to collect prayer needs from members.',
+        icon: HelpCircle,
+        fields: [
+            { id: 'name', type: 'text', label: 'Full Name', required: true, placeholder: 'Your name' },
+            { id: 'phone', type: 'phone', label: 'Phone Number', required: false },
+            { id: 'request', type: 'textarea', label: 'Prayer Request', required: true, placeholder: 'Tell us how we can pray...' },
+        ] as FormField[]
+    }
+];
+
 export default function CreateFormPage() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -66,8 +104,17 @@ export default function CreateFormPage() {
     const [allowMultipleSubmissions, setAllowMultipleSubmissions] = useState(true);
     const [activeTab, setActiveTab] = useState('builder');
     const [isSaving, setIsSaving] = useState(false);
+    const [showTemplateModal, setShowTemplateModal] = useState(false);
     const router = useRouter();
     const supabase = createClient();
+
+    const loadTemplate = (template: typeof templates[0]) => {
+        setTitle(template.title);
+        setDescription(template.description);
+        setFields(template.fields.map(f => ({ ...f, id: Math.random().toString(36).substr(2, 9) })));
+        setShowTemplateModal(false);
+        toast.success(`Loaded ${template.title} template`);
+    };
 
     const addField = (type: FieldType) => {
         const newField: FormField = {
@@ -169,8 +216,47 @@ export default function CreateFormPage() {
                         {/* Left Column: Form Info & Fields */}
                         <div className="lg:col-span-2 space-y-6">
                             <Card className="border-none shadow-sm rounded-3xl bg-white overflow-hidden">
-                                <CardHeader className="bg-gray-50/50">
-                                    <CardTitle className="text-lg">Form Details</CardTitle>
+                                <CardHeader className="bg-gray-50/50 flex flex-row items-center justify-between space-y-0">
+                                    <div>
+                                        <CardTitle className="text-lg">Form Details</CardTitle>
+                                    </div>
+                                    <Dialog open={showTemplateModal} onOpenChange={setShowTemplateModal}>
+                                        <DialogTrigger asChild>
+                                            <Button variant="outline" size="sm" className="rounded-xl border-[#001D86] text-[#001D86] hover:bg-blue-50">
+                                                <LayoutTemplate size={16} className="mr-2" />
+                                                Browse Templates
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="max-w-2xl rounded-3xl">
+                                            <DialogHeader>
+                                                <DialogTitle>Form Templates</DialogTitle>
+                                                <DialogDescription>
+                                                    Start quickly with one of our pre-designed form structures.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                                {templates.map((template) => (
+                                                    <Card
+                                                        key={template.id}
+                                                        className="cursor-pointer hover:ring-2 hover:ring-[#001D86] transition-all border-gray-100 shadow-none hover:shadow-md rounded-2xl group"
+                                                        onClick={() => loadTemplate(template)}
+                                                    >
+                                                        <CardContent className="p-5">
+                                                            <div className="flex items-start gap-4">
+                                                                <div className="p-3 bg-blue-50 rounded-xl text-[#001D86] group-hover:bg-[#001D86] group-hover:text-white transition-colors">
+                                                                    <template.icon size={24} />
+                                                                </div>
+                                                                <div>
+                                                                    <h4 className="font-bold text-gray-900">{template.title}</h4>
+                                                                    <p className="text-xs text-gray-500 mt-1 line-clamp-2">{template.description}</p>
+                                                                </div>
+                                                            </div>
+                                                        </CardContent>
+                                                    </Card>
+                                                ))}
+                                            </div>
+                                        </DialogContent>
+                                    </Dialog>
                                 </CardHeader>
                                 <CardContent className="space-y-4 pt-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
