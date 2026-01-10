@@ -113,7 +113,8 @@ export default function CreateFormPage() {
             .insert(formPayload);
 
         if (error) {
-            toast.error('Failed to save form');
+            console.error('Supabase Error:', error);
+            toast.error(`Failed to save: ${error.message || 'Unknown error'}`);
         } else {
             toast.success(status === 'active' ? 'Form published successfully!' : 'Form saved as draft');
             router.push('/forms');
