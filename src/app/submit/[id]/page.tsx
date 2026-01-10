@@ -132,12 +132,12 @@ export default function PublicFormPage() {
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-blue-50 to-amber-50">
             <div className="max-w-xl mx-auto space-y-8">
                 <div className="text-center space-y-4">
-                    <div className="mx-auto h-16 w-16 bg-gradient-to-br from-violet-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 text-white">
-                        <Church size={32} />
+                    <div className="mx-auto h-24 w-24 bg-white p-1 rounded-full flex items-center justify-center shadow-xl transform rotate-3 overflow-hidden border-4 border-white">
+                        <img src="/clbc-logo.jpeg" alt="CLBC Logo" className="w-full h-full object-cover" />
                     </div>
                     <div className="space-y-1">
-                        <h1 className="text-3xl font-black text-gray-900 tracking-tight">{form.title}</h1>
-                        <p className="text-violet-600 font-bold uppercase tracking-widest text-xs">Christ Love Breed Church</p>
+                        <h1 className="text-3xl font-black text-[#001D86] tracking-tight">{form.title}</h1>
+                        <p className="#D5AB45-600 font-bold uppercase tracking-widest text-xs text-[#D5AB45]">Christ Love Breed Church</p>
                     </div>
                     {form.description && (
                         <p className="text-gray-600 max-w-sm mx-auto">{form.description}</p>
@@ -153,7 +153,7 @@ export default function PublicFormPage() {
                         <CardContent className="p-8 space-y-8">
                             {form.form_schema.map((field: any) => (
                                 <div key={field.id} className="space-y-2 group">
-                                    <Label className="text-base font-bold text-gray-800 flex items-center gap-1 group-focus-within:text-violet-600 transition-colors">
+                                    <Label className="text-base font-bold text-gray-800 flex items-center gap-1 group-focus-within:text-[#001D86] transition-colors">
                                         {field.label} {field.required && <span className="text-red-500">*</span>}
                                     </Label>
 
@@ -173,7 +173,7 @@ export default function PublicFormPage() {
                                                 variant={formData[field.id] === true ? 'default' : 'outline'}
                                                 className={cn(
                                                     "flex-1 h-14 rounded-2xl text-lg font-bold transition-all",
-                                                    formData[field.id] === true ? "bg-violet-600 border-none shadow-lg scale-105" : "border-gray-200 bg-white text-gray-400"
+                                                    formData[field.id] === true ? "bg-[#001D86] border-none shadow-lg scale-105 text-white" : "border-gray-200 bg-white text-gray-400"
                                                 )}
                                                 onClick={() => handleInputChange(field.id, true)}
                                             >
@@ -200,7 +200,7 @@ export default function PublicFormPage() {
                                                     className={cn(
                                                         "w-full text-left p-4 rounded-2xl border-2 transition-all font-semibold flex items-center justify-between",
                                                         formData[field.id] === option
-                                                            ? "border-violet-600 bg-violet-50 text-violet-700"
+                                                            ? "border-[#001D86] bg-blue-50 text-[#001D86]"
                                                             : "border-gray-100 bg-gray-50/50 text-gray-600 hover:border-gray-200"
                                                     )}
                                                     onClick={() => handleInputChange(field.id, option)}
@@ -213,7 +213,7 @@ export default function PublicFormPage() {
                                     ) : (
                                         <Input
                                             type={field.type}
-                                            className="h-14 rounded-2xl border-gray-200 bg-white/50 px-6 text-lg focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 transition-all"
+                                            className="h-14 rounded-2xl border-gray-200 bg-white/50 px-6 text-lg focus:ring-4 focus:ring-blue-500/10 focus:border-[#001D86] transition-all"
                                             placeholder={field.placeholder}
                                             required={field.required}
                                             value={formData[field.id] || ''}
@@ -227,7 +227,7 @@ export default function PublicFormPage() {
                         <CardFooter className="p-8 pt-0">
                             <Button
                                 type="submit"
-                                className="w-full h-16 bg-gradient-to-r from-violet-600 to-blue-600 rounded-[1.5rem] text-xl font-black shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50"
+                                className="w-full h-16 bg-[#001D86] hover:bg-[#D5AB45] text-white rounded-[1.5rem] text-xl font-black shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? (

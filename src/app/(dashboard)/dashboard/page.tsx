@@ -43,14 +43,20 @@ const recentActivity = [
 export default function DashboardPage() {
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Dashboard Overview</h1>
-                    <p className="text-gray-500 mt-1">Welcome back! Here's what's happening at CLBC today.</p>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#001D86] p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#D5AB45] rounded-full blur-[100px] opacity-20 -mr-32 -mt-32" />
+                <div className="relative z-10 flex items-center gap-6">
+                    <div className="h-20 w-20 bg-white p-1 rounded-full shadow-2xl overflow-hidden border-4 border-white flex-shrink-0">
+                        <img src="/clbc-logo.jpeg" alt="CLBC" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                        <h1 className="text-3xl font-black tracking-tight">Dashboard Overview</h1>
+                        <p className="text-blue-100/80 mt-1 font-medium">Welcome back! Here's what's happening at CLBC today.</p>
+                    </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 relative z-10">
                     <Link href="/forms/create">
-                        <Button className="bg-gradient-to-r from-violet-600 to-blue-600 hover:shadow-lg transition-all gap-2 px-6">
+                        <Button className="bg-[#D5AB45] hover:bg-white text-[#001D86] font-extrabold rounded-xl h-12 gap-2 px-8 shadow-xl transition-all hover:scale-105 active:scale-95">
                             <Plus size={18} />
                             Create Form
                         </Button>
@@ -65,14 +71,14 @@ export default function DashboardPage() {
                     value="245"
                     change="+12% from last week"
                     icon={Users}
-                    gradient="from-violet-600 to-blue-600"
+                    gradient="from-[#001D86] to-[#000C33]"
                 />
                 <StatCard
                     title="Active Forms"
                     value="3"
                     change="2 pending submissions"
                     icon={FileText}
-                    gradient="from-blue-600 to-cyan-600"
+                    gradient="from-[#D5AB45] to-[#B89230]"
                 />
                 <StatCard
                     title="New Members"
@@ -86,7 +92,7 @@ export default function DashboardPage() {
                     value="5"
                     change="Next 7 days"
                     icon={Calendar}
-                    gradient="from-violet-700 to-purple-600"
+                    gradient="from-[#001D86] to-[#000C33]"
                 />
             </div>
 

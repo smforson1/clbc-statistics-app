@@ -69,22 +69,22 @@ export function Sidebar() {
             )}
 
             <aside className={cn(
-                "fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-gray-900 flex flex-col shadow-2xl overflow-hidden",
+                "fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-[#000C33] flex flex-col shadow-2xl overflow-hidden",
                 isOpen ? "w-64" : "w-20 -translate-x-full lg:translate-x-0"
             )}>
                 {/* Logo Section */}
-                <div className="p-6 border-b border-gray-800">
+                <div className="p-6 border-b border-white/5">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-blue-500 rounded-xl flex items-center justify-center text-white shadow-lg">
-                            <Church size={24} />
+                        <div className="w-12 h-12 bg-white p-0.5 rounded-full flex items-center justify-center shadow-lg overflow-hidden flex-shrink-0">
+                            <img src="/clbc-logo.jpeg" alt="Logo" className="w-full h-full object-cover" />
                         </div>
                         {isOpen && (
                             <div className="flex flex-col">
-                                <span className="text-xl font-bold bg-gradient-to-r from-violet-400 to-amber-400 bg-clip-text text-transparent">
-                                    CLBC Stats
+                                <span className="text-xl font-black text-white tracking-tight">
+                                    CLBC Portal
                                 </span>
-                                <span className="text-[10px] text-gray-400 font-medium tracking-widest uppercase">
-                                    Logistics Portal
+                                <span className="text-[10px] text-[#D5AB45] font-bold tracking-widest uppercase">
+                                    Official App
                                 </span>
                             </div>
                         )}
@@ -102,13 +102,13 @@ export function Sidebar() {
                                 className={cn(
                                     "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative",
                                     isActive
-                                        ? "bg-gradient-to-r from-violet-600 to-blue-600 text-white shadow-lg"
-                                        : "text-gray-400 hover:bg-gray-800 hover:text-gray-100"
+                                        ? "bg-[#D5AB45] text-[#000C33] shadow-lg font-bold"
+                                        : "text-gray-300 hover:bg-white/5 hover:text-white"
                                 )}
                             >
                                 <item.icon size={22} className={cn(
                                     "flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
-                                    isActive ? "text-white" : "text-gray-400 group-hover:text-violet-400"
+                                    isActive ? "text-[#000C33]" : "text-gray-400 group-hover:text-[#D5AB45]"
                                 )} />
                                 {isOpen && <span className="font-medium">{item.label}</span>}
                                 {!isOpen && (
@@ -122,11 +122,11 @@ export function Sidebar() {
                 </nav>
 
                 {/* User / Logout Section */}
-                <div className="p-4 border-t border-gray-800 bg-gray-900/50">
+                <div className="p-4 border-t border-white/5 bg-black/20">
                     <Button
                         variant="ghost"
                         className={cn(
-                            "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-red-400 hover:bg-red-500/10 hover:text-red-300",
+                            "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-red-500 hover:text-white font-bold",
                             !isOpen && "justify-center px-0"
                         )}
                         onClick={handleLogout}

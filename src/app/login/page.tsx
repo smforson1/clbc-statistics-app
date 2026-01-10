@@ -45,14 +45,14 @@ export default function LoginPage() {
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-blue-50 to-amber-50">
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
-                    <div className="mx-auto h-16 w-16 bg-gradient-to-br from-violet-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                        <Church className="h-10 w-10 text-white" />
+                    <div className="mx-auto h-24 w-24 bg-white p-1 rounded-full shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300 overflow-hidden border-4 border-white">
+                        <img src="/clbc-logo.jpeg" alt="CLBC Logo" className="w-full h-full object-cover" />
                     </div>
-                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900 tracking-tight">
+                    <h2 className="mt-6 text-3xl font-black text-gray-900 tracking-tight">
                         CLBC Statistics
                     </h2>
-                    <p className="mt-2 text-sm text-gray-600">
-                        Statistics & Logistics Management Portal
+                    <p className="mt-2 text-sm text-gray-600 font-bold uppercase tracking-widest bg-blue-50 py-1 inline-block px-4 rounded-full border border-blue-100">
+                        Logistics Management Portal
                     </p>
                 </div>
 
@@ -92,7 +92,7 @@ export default function LoginPage() {
                         <CardFooter className="flex flex-col gap-4">
                             <Button
                                 type="submit"
-                                className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-semibold py-6 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl active:scale-95"
+                                className="w-full bg-[#001D86] hover:bg-[#D5AB45] text-white font-bold py-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 text-lg"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
