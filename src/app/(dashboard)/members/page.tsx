@@ -103,7 +103,7 @@ export default function MembersPage() {
                 </div>
                 <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="bg-gradient-to-r from-violet-600 to-blue-600 hover:shadow-lg transition-all gap-2 px-6">
+                        <Button className="bg-[#001D86] hover:bg-[#D5AB45] hover:text-white transition-all gap-2 px-6 rounded-xl shadow-md">
                             <UserPlus size={18} />
                             Add Member
                         </Button>
@@ -131,7 +131,7 @@ export default function MembersPage() {
                                 </div>
                             </div>
                             <DialogFooter>
-                                <Button type="submit" className="bg-violet-600 rounded-xl">Save Member</Button>
+                                <Button type="submit" className="bg-[#001D86] hover:bg-[#D5AB45] rounded-xl">Save Member</Button>
                             </DialogFooter>
                         </form>
                     </DialogContent>
@@ -143,7 +143,7 @@ export default function MembersPage() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <Input
                         placeholder="Search by name, email or phone..."
-                        className="pl-10 rounded-xl border-none bg-gray-50/50 focus-visible:ring-violet-500"
+                        className="pl-10 rounded-xl border-none bg-gray-50/50 focus-visible:ring-[#001D86]"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -181,10 +181,10 @@ export default function MembersPage() {
                                 </TableRow>
                             ) : (
                                 filteredMembers.map((member) => (
-                                    <TableRow key={member.id} className="hover:bg-violet-50/30 transition-colors">
+                                    <TableRow key={member.id} className="hover:bg-blue-50/30 transition-colors">
                                         <TableCell className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-gradient-to-br from-violet-100 to-blue-100 text-violet-600 rounded-full flex items-center justify-center font-bold">
+                                                <div className="w-10 h-10 bg-blue-50 text-[#001D86] rounded-full flex items-center justify-center font-bold">
                                                     {member.full_name.charAt(0)}
                                                 </div>
                                                 <span className="font-semibold text-gray-900">{member.full_name}</span>

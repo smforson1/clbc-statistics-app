@@ -75,7 +75,7 @@ export default function PublicFormPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <Loader2 className="h-10 w-10 text-violet-600 animate-spin" />
+                <Loader2 className="h-10 w-10 text-[#001D86] animate-spin" />
             </div>
         );
     }
@@ -102,7 +102,7 @@ export default function PublicFormPage() {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
                 <Card className="max-w-md w-full border-none shadow-2xl rounded-[2.5rem] text-center p-12 bg-white overflow-hidden relative">
-                    <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-violet-600 to-blue-600" />
+                    <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#001D86] to-blue-600" />
                     <div className="bg-green-50 h-20 w-20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <CheckCircle2 className="h-12 w-12 text-green-600" />
                     </div>
@@ -111,7 +111,7 @@ export default function PublicFormPage() {
                         Thank you for filling out the <strong>{form.title}</strong>. Your response has been recorded.
                     </p>
                     <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col gap-4">
-                        <div className="flex items-center justify-center gap-2 text-violet-600 font-bold">
+                        <div className="flex items-center justify-center gap-2 text-[#001D86] font-bold">
                             <Church size={20} />
                             <span>Christ Love Breed Church</span>
                         </div>
@@ -129,7 +129,7 @@ export default function PublicFormPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-blue-50 to-amber-50">
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-blue-50 to-amber-50">
             <div className="max-w-xl mx-auto space-y-8">
                 <div className="text-center space-y-4">
                     <div className="mx-auto h-24 w-24 bg-white p-1 rounded-full flex items-center justify-center shadow-xl transform rotate-3 overflow-hidden border-4 border-white">
@@ -137,7 +137,7 @@ export default function PublicFormPage() {
                     </div>
                     <div className="space-y-1">
                         <h1 className="text-3xl font-black text-[#001D86] tracking-tight">{form.title}</h1>
-                        <p className="#D5AB45-600 font-bold uppercase tracking-widest text-xs text-[#D5AB45]">Christ Love Breed Church</p>
+                        <p className="font-bold uppercase tracking-widest text-xs text-[#D5AB45]">Christ Love Breed Church</p>
                     </div>
                     {form.description && (
                         <p className="text-gray-600 max-w-sm mx-auto">{form.description}</p>

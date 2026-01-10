@@ -24,7 +24,7 @@ export const generateAttendancePDF = (data: ReportData) => {
 
     // --- HEADER SECTION ---
     // Branded bar at top
-    doc.setFillColor(79, 70, 229); // Violet-600
+    doc.setFillColor(0, 29, 134); // CLBC Deep Blue
     doc.rect(0, 0, pageWidth, 40, 'F');
 
     // Church Name & Branding
@@ -74,7 +74,7 @@ export const generateAttendancePDF = (data: ReportData) => {
         body: tableData,
         theme: 'striped',
         headStyles: {
-            fillColor: [79, 70, 229], // Violet-600
+            fillColor: [0, 29, 134], // CLBC Deep Blue
             textColor: [255, 255, 255],
             fontSize: 10,
             fontStyle: 'bold',

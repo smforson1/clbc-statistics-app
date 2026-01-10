@@ -126,7 +126,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-gray-200 rounded-full hover:bg-violet-200 transition-colors;
+    @apply bg-gray-200 rounded-full hover:bg-blue-200 transition-colors;
   }
 }
 

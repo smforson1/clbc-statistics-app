@@ -54,7 +54,7 @@ export default function PrayerRequestPage() {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
                 <Card className="max-w-md w-full border-none shadow-2xl rounded-[2.5rem] text-center p-12 bg-white overflow-hidden relative">
-                    <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-violet-600 to-blue-600" />
+                    <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#001D86] to-blue-600" />
                     <div className="bg-amber-50 h-20 w-20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Heart className="h-12 w-12 text-amber-600 fill-amber-600/20" />
                     </div>
@@ -63,7 +63,7 @@ export default function PrayerRequestPage() {
                         Thank you for sharing your prayer request. Our intercession team will be praying with you.
                     </p>
                     <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col gap-4">
-                        <div className="flex items-center justify-center gap-2 text-violet-600 font-bold">
+                        <div className="flex items-center justify-center gap-2 text-[#001D86] font-bold">
                             <Church size={20} />
                             <span>Christ Love Breed Church</span>
                         </div>
@@ -81,7 +81,7 @@ export default function PrayerRequestPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-100 via-white to-violet-50">
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-100 via-white to-blue-50">
             <div className="max-w-xl mx-auto space-y-8">
                 <div className="text-center space-y-4">
                     <div className="mx-auto h-16 w-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg transform -rotate-3 text-white">

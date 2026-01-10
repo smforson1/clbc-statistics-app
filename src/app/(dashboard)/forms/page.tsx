@@ -81,7 +81,7 @@ export default function FormsPage() {
                     <p className="text-gray-500 mt-1">Create and manage event attendance forms</p>
                 </div>
                 <Link href="/forms/create">
-                    <Button className="bg-gradient-to-r from-violet-600 to-blue-600 hover:shadow-lg transition-all gap-2 px-6">
+                    <Button className="bg-[#001D86] hover:bg-[#D5AB45] hover:text-white transition-all gap-2 px-6 rounded-xl shadow-md">
                         <Plus size={18} />
                         Create New Form
                     </Button>
@@ -93,7 +93,7 @@ export default function FormsPage() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <Input
                         placeholder="Search forms by title..."
-                        className="pl-10 bg-gray-50/50 border-none focus-visible:ring-violet-500"
+                        className="pl-10 bg-gray-50/50 border-none focus-visible:ring-[#001D86]"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -104,7 +104,7 @@ export default function FormsPage() {
                         Filter
                     </Button>
                     <select
-                        className="h-10 px-3 pr-8 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 appearance-none cursor-pointer"
+                        className="h-10 px-3 pr-8 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#001D86] appearance-none cursor-pointer"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
                     >
@@ -124,7 +124,7 @@ export default function FormsPage() {
                 </div>
             ) : filteredForms.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
-                    <div className="mx-auto w-16 h-16 bg-violet-50 text-violet-600 rounded-full flex items-center justify-center mb-4">
+                    <div className="mx-auto w-16 h-16 bg-blue-50 text-[#001D86] rounded-full flex items-center justify-center mb-4">
                         <FileText size={32} />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">No forms found</h3>
@@ -202,7 +202,7 @@ function FormCard({ form, onDelete, onStatusChange }: { form: any, onDelete: (id
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-violet-600 transition-colors">
+                <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-[#001D86] transition-colors">
                     {form.title}
                 </CardTitle>
                 <p className="text-sm text-gray-500 line-clamp-2 mt-2">{form.description || 'No description provided'}</p>
@@ -222,7 +222,7 @@ function FormCard({ form, onDelete, onStatusChange }: { form: any, onDelete: (id
                 </div>
             </CardContent>
             <CardFooter className="bg-gray-50/50 p-4 gap-2 border-t border-gray-100">
-                <Button variant="secondary" className="flex-1 bg-white hover:bg-violet-50 hover:text-violet-700 border border-gray-200 rounded-xl gap-2 font-medium">
+                <Button variant="secondary" className="flex-1 bg-white hover:bg-blue-50 hover:text-[#001D86] border border-gray-200 rounded-xl gap-2 font-medium">
                     <QrCode size={16} />
                     QR code
                 </Button>

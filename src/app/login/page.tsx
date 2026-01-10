@@ -42,7 +42,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-blue-50 to-amber-50">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-blue-50 to-amber-50">
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
                     <div className="mx-auto h-24 w-24 bg-white p-1 rounded-full shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300 overflow-hidden border-4 border-white">
@@ -108,7 +108,7 @@ export default function LoginPage() {
                                 <button
                                     type="button"
                                     onClick={() => toast.info('Please contact the System Admin to reset your password.')}
-                                    className="text-sm text-violet-600 hover:text-violet-500 font-medium"
+                                    className="text-sm text-[#001D86] hover:text-blue-500 font-medium"
                                 >
                                     Forgot your password?
                                 </button>
