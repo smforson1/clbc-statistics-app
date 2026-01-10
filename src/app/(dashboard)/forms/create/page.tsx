@@ -68,9 +68,9 @@ const fieldTypes: { type: FieldType, icon: any, label: string }[] = [
 
 const templates = [
     {
-        id: 'uni-outreach',
-        title: 'University Outreach',
-        description: 'Perfect for campus events targeting freshers, students, and alumni.',
+        id: 'clbc-knust-connect',
+        title: 'CLBC-KNUST Connect',
+        description: 'Specialized intake form for KNUST freshers, continuiing students, and alumni.',
         icon: Rocket,
         fields: [
             { id: 'cat', type: 'radio', label: 'I am a...', required: true, options: ['Fresher', 'Continuing Student', 'Alumnus'] },
