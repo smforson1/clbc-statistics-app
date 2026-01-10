@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase';
 import {
     BarChart,
     Bar,
@@ -41,6 +43,85 @@ const recentActivity = [
 ];
 
 export default function DashboardPage() {
+    const [stats, setStats] = useState({
+        attendance: 0,
+        activeForms: 0,
+        newMembers: 0,
+        events: 0
+    });
+    const [activities, setActivities] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const supabase = createClient();
+
+    useEffect(() => {
+        fetchDashboardData();
+    }, []);
+
+    const fetchDashboardData = async () => {
+        setIsLoading(true);
+        try {
+            // Fetch total responses for today as "Attendance" (simplified logic)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const { count: attendanceCount } = await supabase
+                .from('form_responses')
+                .select('*', { count: 'exact', head: true })
+                .gte('submitted_at', today.toISOString());
+
+            // Fetch active forms count
+            const { count: activeFormsCount } = await supabase
+                .from('forms')
+                .select('*', { count: 'exact', head: true })
+                .eq('status', 'active');
+
+            // Fetch new members this month
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            const { count: memberCount } = await supabase
+                .from('members')
+                .select('*', { count: 'exact', head: true })
+                .gte('created_at', firstDayOfMonth.toISOString());
+
+            // Fetch upcoming events
+            const { count: upcomingEventsCount } = await supabase
+                .from('events')
+                .select('*', { count: 'exact', head: true })
+                .gte('event_date', today.toISOString().split('T')[0]);
+
+            setStats({
+                attendance: attendanceCount || 0,
+                activeForms: activeFormsCount || 0,
+                newMembers: memberCount || 0,
+                events: upcomingEventsCount || 0
+            });
+
+            // Fetch recent responses with form titles
+            const { data: recentResp, error: respError } = await supabase
+                .from('form_responses')
+                .select(`
+                    id,
+                    submitted_at,
+                    forms (title)
+                `)
+                .order('submitted_at', { ascending: false })
+                .limit(4);
+
+            if (!respError && recentResp) {
+                setActivities(recentResp.map(r => ({
+                    id: r.id,
+                    title: (r as any).forms?.title || 'Form Submission',
+                    date: new Date(r.submitted_at).toLocaleDateString(),
+                    rawDate: r.submitted_at
+                })));
+            }
+
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#001D86] p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden">
@@ -68,29 +149,29 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard
                     title="Today's Attendance"
-                    value="245"
-                    change="+12% from last week"
+                    value={stats.attendance.toString()}
+                    change="Real-time count"
                     icon={Users}
                     gradient="from-[#001D86] to-[#000C33]"
                 />
                 <StatCard
                     title="Active Forms"
-                    value="3"
-                    change="2 pending submissions"
+                    value={stats.activeForms.toString()}
+                    change="Currently taking responses"
                     icon={FileText}
                     gradient="from-[#D5AB45] to-[#B89230]"
                 />
                 <StatCard
                     title="New Members"
-                    value="8"
-                    change="This month"
+                    value={stats.newMembers.toString()}
+                    change="Joined this month"
                     icon={ArrowUpRight}
                     gradient="from-amber-500 to-yellow-500"
                 />
                 <StatCard
                     title="Upcoming Events"
-                    value="5"
-                    change="Next 7 days"
+                    value={stats.events.toString()}
+                    change="Scheduled"
                     icon={Calendar}
                     gradient="from-[#001D86] to-[#000C33]"
                 />
@@ -153,22 +234,26 @@ export default function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {recentActivity.map((activity) => (
-                                <div key={activity.id} className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-blue-200 transition-colors group">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-[#001D86]">
-                                            <FileText size={20} />
+                            {activities.length === 0 ? (
+                                <p className="text-center py-8 text-gray-500">No recent activity found.</p>
+                            ) : (
+                                activities.map((activity) => (
+                                    <div key={activity.id} className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-blue-200 transition-colors group">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-[#001D86]">
+                                                <FileText size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="font-semibold text-gray-900">{activity.title}</p>
+                                                <p className="text-sm text-gray-500">Submitted on {activity.date}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="font-semibold text-gray-900">{activity.title}</p>
-                                            <p className="text-sm text-gray-500">{activity.responses} responses • {activity.date}</p>
-                                        </div>
+                                        <Button variant="ghost" size="sm" className="text-[#001D86] hover:bg-blue-50 font-bold">
+                                            View
+                                        </Button>
                                     </div>
-                                    <Button variant="ghost" size="sm" className="text-[#001D86] hover:bg-blue-50 font-bold">
-                                        View
-                                    </Button>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
                     </CardContent>
                 </Card>

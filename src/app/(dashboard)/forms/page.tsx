@@ -26,7 +26,7 @@ export default function FormsPage() {
         setIsLoading(true);
         const { data, error } = await supabase
             .from('forms')
-            .select('*')
+            .select('*, responses:form_responses(count)')
             .order('created_at', { ascending: false });
 
         if (error) {
@@ -211,7 +211,9 @@ function FormCard({ form, onDelete, onStatusChange }: { form: any, onDelete: (id
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Responses</p>
-                        <p className="text-lg font-bold text-gray-900">0</p>
+                        <p className="text-lg font-bold text-gray-900">
+                            {form.responses?.[0]?.count || 0}
+                        </p>
                     </div>
                     <div className="space-y-1">
                         <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Event Date</p>
@@ -233,7 +235,7 @@ function FormCard({ form, onDelete, onStatusChange }: { form: any, onDelete: (id
                     </Button>
                 </Link>
             </CardFooter>
-        </Card>
+        </Card >
     );
 }
 
