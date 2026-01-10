@@ -110,7 +110,7 @@ export function Sidebar() {
             <Button
                 variant="ghost"
                 size="icon"
-                className="fixed top-4 left-4 z-50 lg:hidden text-gray-600 hover:text-[#D5AB45]"
+                className="fixed top-4 left-4 z-50 lg:hidden text-gray-600 hover:text-[#D5AB45] print:hidden"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -126,7 +126,7 @@ export function Sidebar() {
 
             <aside
                 className={cn(
-                    "fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-[#000C33] flex flex-col shadow-2xl overflow-hidden",
+                    "fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-[#000C33] flex flex-col shadow-2xl overflow-hidden print:hidden",
                     isOpen ? "w-64" : "w-20 -translate-x-full lg:translate-x-0"
                 )}
                 onMouseEnter={handleMouseEnter}
