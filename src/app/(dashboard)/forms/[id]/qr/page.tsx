@@ -50,7 +50,14 @@ export default function QRPage() {
         setIsLoading(false);
     };
 
-    const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL}/submit/${id}`;
+    const [shareUrl, setShareUrl] = useState('');
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const origin = window.location.origin;
+            setShareUrl(`${origin}/submit/${id}`);
+        }
+    }, [id]);
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(shareUrl);
