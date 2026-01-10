@@ -141,7 +141,7 @@ export default function ResponsesPage() {
             formTitle: form.title,
             formDescription: form.description,
             responses: responses,
-            fields: form.fields,
+            fields: form.form_schema,
             generatedBy: user?.email || 'Admin'
         });
         toast.success('PDF Report Generated');

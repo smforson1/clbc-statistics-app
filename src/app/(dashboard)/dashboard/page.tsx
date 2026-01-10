@@ -101,7 +101,7 @@ export default function DashboardPage() {
                 .select(`
                     id,
                     submitted_at,
-                    forms (title)
+                    forms (id, title)
                 `)
                 .order('submitted_at', { ascending: false })
                 .limit(4);
@@ -109,6 +109,7 @@ export default function DashboardPage() {
             if (!respError && recentResp) {
                 setActivities(recentResp.map(r => ({
                     id: r.id,
+                    formId: (r as any).forms?.id,
                     title: (r as any).forms?.title || 'Form Submission',
                     date: new Date(r.submitted_at).toLocaleDateString(),
                     rawDate: r.submitted_at
@@ -248,9 +249,11 @@ export default function DashboardPage() {
                                                 <p className="text-sm text-gray-500">Submitted on {activity.date}</p>
                                             </div>
                                         </div>
-                                        <Button variant="ghost" size="sm" className="text-[#001D86] hover:bg-blue-50 font-bold">
-                                            View
-                                        </Button>
+                                        <Link href={`/forms/${activity.formId}/responses`}>
+                                            <Button variant="ghost" size="sm" className="text-[#001D86] hover:bg-blue-50 font-bold">
+                                                View
+                                            </Button>
+                                        </Link>
                                     </div>
                                 ))
                             )}

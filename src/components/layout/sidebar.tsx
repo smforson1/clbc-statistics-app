@@ -1,4 +1,4 @@
-'use client';
+import { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase';
-import { useState } from 'react';
 import { toast } from 'sonner';
 
 const navItems = [
@@ -38,6 +37,43 @@ export function Sidebar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(true);
     const supabase = createClient();
+
+    useEffect(() => {
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        };
+
+        const handleTouchEnd = (e: TouchEvent) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+
+            // Threshold for horizontal swipe (50px) and must be more horizontal than vertical
+            if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX > 0) {
+                    // Swipe Right -> Open
+                    setIsOpen(true);
+                } else {
+                    // Swipe Left -> Close
+                    setIsOpen(false);
+                }
+            }
+        };
+
+        window.addEventListener('touchstart', handleTouchStart);
+        window.addEventListener('touchend', handleTouchEnd);
+
+        return () => {
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchend', handleTouchEnd);
+        };
+    }, []);
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
