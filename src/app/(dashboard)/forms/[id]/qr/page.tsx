@@ -101,7 +101,7 @@ export default function QRPage() {
 
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 print:hidden">
                 <Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
                     <ChevronLeft size={24} />
                 </Button>
@@ -111,26 +111,27 @@ export default function QRPage() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:block">
                 {/* QR Code Display Card */}
-                <Card className="border-none shadow-2xl rounded-[2.5rem] bg-white overflow-hidden flex flex-col items-center p-8">
+                <Card className="border-none shadow-2xl rounded-[2.5rem] bg-white overflow-hidden flex flex-col items-center p-8 print:shadow-none print:p-0 print:m-0 print:rounded-none">
                     <div className="w-full text-center mb-6 space-y-2">
-                        <div className="mx-auto h-12 w-12 bg-gradient-to-br from-[#001D86] to-[#D5AB45] rounded-xl flex items-center justify-center text-white mb-2 shadow-lg">
+                        <div className="mx-auto h-12 w-12 bg-gradient-to-br from-[#001D86] to-[#D5AB45] rounded-xl flex items-center justify-center text-white mb-2 shadow-lg print:hidden">
                             <Church size={28} />
                         </div>
-                        <h2 className="text-xl font-bold text-gray-900">{form.title}</h2>
-                        <p className="text-xs text-gray-400 font-medium tracking-widest uppercase">Christ Love Breed Church</p>
+                        <h2 className="text-xl font-bold text-gray-900 print:text-3xl print:mb-2">{form.title}</h2>
+                        <p className="text-xs text-gray-400 font-medium tracking-widest uppercase print:text-sm print:text-gray-600">Christ Love Breed Church</p>
                     </div>
 
-                    <div className="relative p-6 bg-white rounded-3xl shadow-inner border-8 border-gray-50 mb-8 group hover:scale-105 transition-transform duration-500">
+                    <div className="relative p-6 bg-white rounded-3xl shadow-inner border-8 border-gray-50 mb-8 group hover:scale-105 transition-transform duration-500 print:border-none print:shadow-none print:p-0 print:mb-4">
                         <QRCodeSVG
                             ref={qrRef}
                             value={shareUrl}
                             size={256}
                             level="H"
                             includeMargin={true}
+                            className="print:w-[400px] print:h-[400px]"
                             imageSettings={{
-                                src: "/clbc-logo.jpg", // New logo
+                                src: "/clbc-logo.jpg",
                                 x: undefined,
                                 y: undefined,
                                 height: 48,
@@ -138,14 +139,14 @@ export default function QRPage() {
                                 excavate: true,
                             }}
                         />
-                        <div className="absolute inset-x-0 -bottom-4 flex justify-center">
+                        <div className="absolute inset-x-0 -bottom-4 flex justify-center print:hidden">
                             <Badge className="bg-gradient-to-r from-[#001D86] to-[#D5AB45] px-4 py-1 rounded-full shadow-lg border-2 border-white">
                                 SCAN TO FILL
                             </Badge>
                         </div>
                     </div>
 
-                    <div className="w-full flex gap-3 mt-4">
+                    <div className="w-full flex gap-3 mt-4 print:hidden">
                         <Button onClick={downloadQR} className="flex-1 rounded-2xl h-12 bg-gray-900 hover:bg-black gap-2">
                             <Download size={18} /> PNG
                         </Button>
@@ -156,7 +157,7 @@ export default function QRPage() {
                 </Card>
 
                 {/* Sharing Options */}
-                <div className="space-y-6">
+                <div className="space-y-6 print:hidden">
                     <Card className="border-none shadow-sm rounded-3xl bg-white p-6">
                         <CardHeader className="px-0 pt-0">
                             <CardTitle className="text-lg">Share Link</CardTitle>

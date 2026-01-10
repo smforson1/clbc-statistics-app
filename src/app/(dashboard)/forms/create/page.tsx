@@ -434,7 +434,7 @@ export default function CreateFormPage() {
                     <div className="max-w-2xl mx-auto py-12 px-4 bg-white/50 rounded-3xl border-2 border-dashed border-gray-200">
                         <div className="text-center mb-10">
                             <div className="mx-auto h-12 w-12 bg-gradient-to-br from-[#001D86] to-blue-900 rounded-xl flex items-center justify-center text-white mb-4">
-                                <Church size={28} />
+                                <Church className="w-7 h-7" />
                             </div>
                             <h2 className="text-2xl font-bold text-gray-900">{title || "Form Title"}</h2>
                             <p className="text-gray-500 mt-2">{description || "Form description will appear here..."}</p>
@@ -478,10 +478,10 @@ export default function CreateFormPage() {
     );
 }
 
-function Church(props: any) {
+function Church({ className }: { className?: string }) {
     return (
         <svg
-            {...props}
+            className={className}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
