@@ -20,8 +20,11 @@ export default function AnalyticsPage() {
         totalMembers: 0,
         totalForms: 0,
         totalResponses: 0,
-        growthRate: 12.5
+        growthRate: 0
     });
+    const [attendanceData, setAttendanceData] = useState<any[]>([]);
+    const [demographicsData, setDemographicsData] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const supabase = createClient();
 
@@ -30,33 +33,104 @@ export default function AnalyticsPage() {
     }, []);
 
     const fetchStats = async () => {
-        const { count: membersCount } = await supabase.from('members').select('*', { count: 'exact', head: true });
-        const { count: formsCount } = await supabase.from('forms').select('*', { count: 'exact', head: true });
-        const { count: responsesCount } = await supabase.from('form_responses').select('*', { count: 'exact', head: true });
+        setIsLoading(true);
+        try {
+            // Basic counts
+            const { count: membersCount } = await supabase.from('members').select('*', { count: 'exact', head: true });
+            const { count: formsCount } = await supabase.from('forms').select('*', { count: 'exact', head: true });
+            const { count: responsesCount } = await supabase.from('form_responses').select('*', { count: 'exact', head: true });
 
-        setStats({
-            totalMembers: membersCount || 0,
-            totalForms: formsCount || 0,
-            totalResponses: responsesCount || 0,
-            growthRate: 15.2
-        });
+            // Calculate Growth Rate (Members this month vs last month)
+            const now = new Date();
+            const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const firstDayOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+            const { count: thisMonthCount } = await supabase
+                .from('members')
+                .select('*', { count: 'exact', head: true })
+                .gte('created_at', firstDayOfMonth.toISOString());
+
+            const { count: lastMonthCount } = await supabase
+                .from('members')
+                .select('*', { count: 'exact', head: true })
+                .gte('created_at', firstDayOfLastMonth.toISOString())
+                .lt('created_at', firstDayOfMonth.toISOString());
+
+            let growth = 0;
+            if (lastMonthCount && lastMonthCount > 0) {
+                growth = parseFloat(((thisMonthCount || 0) / lastMonthCount * 100).toFixed(1));
+            } else if (thisMonthCount && thisMonthCount > 0) {
+                growth = 100; // First month growth
+            }
+
+            setStats({
+                totalMembers: membersCount || 0,
+                totalForms: formsCount || 0,
+                totalResponses: responsesCount || 0,
+                growthRate: growth
+            });
+
+            // Fetch Attendance Trend (last 6 months/weeks equivalent)
+            const sixWeeksAgo = new Date();
+            sixWeeksAgo.setDate(sixWeeksAgo.getDate() - 42);
+
+            const { data: trendData } = await supabase
+                .from('form_responses')
+                .select('submitted_at')
+                .gte('submitted_at', sixWeeksAgo.toISOString())
+                .order('submitted_at', { ascending: true });
+
+            if (trendData) {
+                // Group by week
+                const weeks: Record<string, number> = {};
+                trendData.forEach(r => {
+                    const date = new Date(r.submitted_at);
+                    const weekNum = Math.ceil((date.getDate() + new Date(date.getFullYear(), date.getMonth(), 1).getDay()) / 7);
+                    const key = `${date.toLocaleString('default', { month: 'short' })} W${weekNum}`;
+                    weeks[key] = (weeks[key] || 0) + 1;
+                });
+
+                const formattedTrend = Object.entries(weeks).map(([name, attendance]) => ({ name, attendance }));
+                setAttendanceData(formattedTrend.slice(-6));
+            }
+
+            // Fetch Demographics (Age distribution)
+            const { data: memberData } = await supabase
+                .from('members')
+                .select('date_of_birth, gender');
+
+            if (memberData) {
+                const groups = {
+                    Children: { count: 0, color: '#10b981' },
+                    Youth: { count: 0, color: '#001D86' },
+                    Adults: { count: 0, color: '#3b82f6' },
+                    Seniors: { count: 0, color: '#D5AB45' },
+                };
+
+                memberData.forEach(m => {
+                    if (!m.date_of_birth) return;
+                    const age = new Date().getFullYear() - new Date(m.date_of_birth).getFullYear();
+                    if (age < 13) groups.Children.count++;
+                    else if (age < 25) groups.Youth.count++;
+                    else if (age < 60) groups.Adults.count++;
+                    else groups.Seniors.count++;
+                });
+
+                const formattedDemo = Object.entries(groups).map(([name, data]) => ({
+                    name,
+                    value: Math.round(((data.count / (memberData.length || 1)) * 100)),
+                    color: data.color
+                })).filter(d => d.value > 0);
+
+                setDemographicsData(formattedDemo);
+            }
+
+        } catch (error) {
+            console.error('Error fetching analytics:', error);
+        } finally {
+            setIsLoading(false);
+        }
     };
-
-    const attendanceData = [
-        { name: 'Week 1', attendance: 45 },
-        { name: 'Week 2', attendance: 52 },
-        { name: 'Week 3', attendance: 48 },
-        { name: 'Week 4', attendance: 61 },
-        { name: 'Week 5', attendance: 55 },
-        { name: 'Week 6', attendance: 67 },
-    ];
-
-    const demographicsData = [
-        { name: 'Youth', value: 40, color: '#001D86' },
-        { name: 'Adults', value: 35, color: '#3b82f6' },
-        { name: 'Seniors', value: 15, color: '#D5AB45' },
-        { name: 'Children', value: 10, color: '#10b981' },
-    ];
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">

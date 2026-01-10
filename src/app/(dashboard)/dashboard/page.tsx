@@ -25,22 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const data = [
-    { name: 'W1', attendance: 145 },
-    { name: 'W2', attendance: 168 },
-    { name: 'W3', attendance: 152 },
-    { name: 'W4', attendance: 180 },
-    { name: 'W5', attendance: 195 },
-    { name: 'W6', attendance: 188 },
-    { name: 'W7', attendance: 245 },
-];
 
-const recentActivity = [
-    { id: 1, title: 'Sunday Service Form', responses: 245, date: 'Today' },
-    { id: 2, title: 'Midweek Bible Study', responses: 132, date: 'Yesterday' },
-    { id: 3, title: 'Youth Fellowship', responses: 67, date: '2 days ago' },
-    { id: 4, title: 'Prayer Request Form', responses: 42, date: '3 days ago' },
-];
 
 export default function DashboardPage() {
     const [stats, setStats] = useState({
@@ -50,6 +35,7 @@ export default function DashboardPage() {
         events: 0
     });
     const [activities, setActivities] = useState<any[]>([]);
+    const [chartData, setChartData] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const supabase = createClient();
 
@@ -114,6 +100,29 @@ export default function DashboardPage() {
                     date: new Date(r.submitted_at).toLocaleDateString(),
                     rawDate: r.submitted_at
                 })));
+            }
+
+            // Fetch chart data (last 7 weeks)
+            const sevenWeeksAgo = new Date();
+            sevenWeeksAgo.setDate(sevenWeeksAgo.getDate() - 49);
+
+            const { data: trendData } = await supabase
+                .from('form_responses')
+                .select('submitted_at')
+                .gte('submitted_at', sevenWeeksAgo.toISOString())
+                .order('submitted_at', { ascending: true });
+
+            if (trendData) {
+                const groupedData: Record<string, number> = {};
+                trendData.forEach(r => {
+                    const d = new Date(r.submitted_at);
+                    const weekLabel = `W${Math.ceil((d.getDate() + new Date(d.getFullYear(), d.getMonth(), 1).getDay()) / 7)}`;
+                    const key = `${d.getMonth() + 1}/${d.getDate()} (${weekLabel})`;
+                    groupedData[key] = (groupedData[key] || 0) + 1;
+                });
+
+                const formattedChart = Object.entries(groupedData).map(([name, attendance]) => ({ name, attendance }));
+                setChartData(formattedChart.slice(-7));
             }
 
         } catch (error) {
@@ -191,7 +200,7 @@ export default function DashboardPage() {
                     <CardContent>
                         <div className="h-[300px] w-full">
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={data}>
+                                <BarChart data={chartData}>
                                     <defs>
                                         <linearGradient id="colorAttendance" x1="0" y1="0" x2="0" y2="1">
                                             <stop offset="5%" stopColor="#001D86" stopOpacity={0.8} />
