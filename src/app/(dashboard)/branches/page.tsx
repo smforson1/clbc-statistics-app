@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase';
-import { Plus, MapPin, Building2, Search, Trash2, Edit2 } from 'lucide-react';
+import { Plus, MapPin, Building2, Search, Trash2, Edit2, Copy, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -205,8 +205,22 @@ export default function BranchesPage() {
                                     {branch.location || 'No location specified'}
                                 </CardDescription>
                             </CardHeader>
-                            <CardFooter className="bg-gray-50 text-xs text-gray-400 font-medium px-6 py-3 border-t border-gray-100">
-                                ID: {branch.id.split('-')[0]}...
+                            <CardFooter className="bg-gray-50 text-xs text-gray-400 font-medium px-6 py-3 border-t border-gray-100 flex justify-between items-center group/footer">
+                                <span className="font-mono bg-white/50 px-2 py-0.5 rounded border border-gray-100">
+                                    ID: {branch.id.split('-')[0]}...
+                                </span>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-8 px-2 text-[#001D86] hover:bg-blue-100/50 gap-1.5 rounded-lg opacity-0 group-hover/footer:opacity-100 transition-opacity"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(branch.id);
+                                        toast.success('Branch ID copied to clipboard');
+                                    }}
+                                >
+                                    <Copy size={12} />
+                                    Copy Full ID
+                                </Button>
                             </CardFooter>
                         </Card>
                     ))}
