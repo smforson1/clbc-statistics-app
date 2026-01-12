@@ -139,6 +139,7 @@ ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 CREATE TABLE IF NOT EXISTS public.activity_log (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES public.profiles(id),
+  branch_id UUID REFERENCES public.branches(id),
   action VARCHAR(100) NOT NULL,
   entity_type VARCHAR(50),
   entity_id UUID,
@@ -147,6 +148,10 @@ CREATE TABLE IF NOT EXISTS public.activity_log (
 );
 
 ALTER TABLE public.activity_log ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their branch activity logs"
+  ON public.activity_log FOR SELECT
+  USING (branch_id = public.get_user_branch_id());
 
 -- RLS Policies
 
@@ -165,6 +170,18 @@ ALTER TABLE public.branches ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Branches are viewable by authenticated users." ON public.branches
   FOR SELECT TO authenticated USING (true);
+
+-- Member Ministries
+CREATE POLICY "Admins can manage their branch member ministries"
+  ON public.member_ministries FOR ALL
+  TO authenticated
+  USING (member_id IN (SELECT id FROM public.members));
+
+-- Event Resources
+CREATE POLICY "Admins can manage their branch event resources"
+  ON public.event_resources FOR ALL
+  TO authenticated
+  USING (event_id IN (SELECT id FROM public.events));
 
 -- Functions to get current user's branch
 CREATE OR REPLACE FUNCTION public.get_user_branch_id()
@@ -273,6 +290,7 @@ CREATE TRIGGER tr_members_set_branch BEFORE INSERT ON public.members FOR EACH RO
 CREATE TRIGGER tr_events_set_branch BEFORE INSERT ON public.events FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
 CREATE TRIGGER tr_messages_set_branch BEFORE INSERT ON public.messages FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
 CREATE TRIGGER tr_prayer_requests_set_branch BEFORE INSERT ON public.prayer_requests FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
+CREATE TRIGGER tr_activity_log_set_branch BEFORE INSERT ON public.activity_log FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
 
 -- SPECIAL TRIGGER FOR FORM RESPONSES (Anonymous Submissions)
 CREATE OR REPLACE FUNCTION public.set_form_response_branch_id()

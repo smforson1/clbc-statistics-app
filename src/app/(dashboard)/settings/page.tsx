@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase';
 import {
     Settings,
     User,
@@ -25,13 +26,57 @@ import { toast } from 'sonner';
 
 export default function SettingsPage() {
     const [isSaving, setIsSaving] = useState(false);
+    const [branchData, setBranchData] = useState({ name: '', location: '' });
+    const supabase = createClient();
 
-    const handleSave = () => {
+    useEffect(() => {
+        fetchBranchData();
+    }, []);
+
+    const fetchBranchData = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('branch:branches(name, location)')
+                .eq('id', user.id)
+                .single();
+
+            if (profile?.branch) {
+                setBranchData({
+                    name: (profile.branch as any).name,
+                    location: (profile.branch as any).location || ''
+                });
+            }
+        }
+    };
+
+    const handleSave = async () => {
         setIsSaving(true);
-        setTimeout(() => {
-            toast.success('Settings saved successfully');
-            setIsSaving(false);
-        }, 1000);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('branch_id')
+            .eq('id', user.id)
+            .single();
+
+        if (profile?.branch_id) {
+            const { error } = await supabase
+                .from('branches')
+                .update({ name: branchData.name, location: branchData.location })
+                .eq('id', profile.branch_id);
+
+            if (error) {
+                toast.error('Failed to update branch settings');
+            } else {
+                toast.success('Branch settings updated successfully');
+                // Force a refresh of the sidebar branch name
+                window.location.reload();
+            }
+        }
+        setIsSaving(false);
     };
 
     return (
@@ -69,8 +114,12 @@ export default function SettingsPage() {
                         <CardContent className="p-8 space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-2">
-                                    <Label>Church Name</Label>
-                                    <Input defaultValue="Christ Love Breed Church" className="rounded-xl" />
+                                    <Label>Church Branch Name</Label>
+                                    <Input
+                                        value={branchData.name}
+                                        onChange={(e) => setBranchData({ ...branchData, name: e.target.value })}
+                                        className="rounded-xl"
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Website URL</Label>
@@ -86,8 +135,12 @@ export default function SettingsPage() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <Label>Address</Label>
-                                <Input defaultValue="Accra, Ghana" className="rounded-xl" />
+                                <Label>Branch Address / Location</Label>
+                                <Input
+                                    value={branchData.location}
+                                    onChange={(e) => setBranchData({ ...branchData, location: e.target.value })}
+                                    className="rounded-xl"
+                                />
                             </div>
                             <div className="pt-4 flex justify-end">
                                 <Button onClick={handleSave} disabled={isSaving} className="bg-[#001D86] hover:bg-[#D5AB45] rounded-xl px-8 transition-all">
