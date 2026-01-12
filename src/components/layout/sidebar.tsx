@@ -32,15 +32,20 @@ const navItems = [
     { icon: Send, label: 'Broadcast', href: '/broadcast' },
     { icon: Users, label: 'Members', href: '/members' },
     { icon: Calendar, label: 'Events', href: '/events' },
+    { icon: Church, label: 'Branches', href: '/branches', adminOnly: true },
     { icon: Settings, label: 'Settings', href: '/settings' },
 ];
 
 export function Sidebar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+    const [branchName, setBranchName] = useState<string>('');
+    const [userRole, setUserRole] = useState<string>('admin');
     const supabase = createClient();
 
     useEffect(() => {
+        fetchBranchInfo();
+
         let touchStartX = 0;
         let touchStartY = 0;
 
@@ -76,6 +81,24 @@ export function Sidebar() {
             window.removeEventListener('touchend', handleTouchEnd);
         };
     }, []);
+
+    const fetchBranchInfo = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('role, branch:branches(name)')
+                .eq('id', user.id)
+                .single();
+
+            if (profile) {
+                setUserRole(profile.role || 'admin');
+                if (profile.branch) {
+                    setBranchName((profile.branch as any).name);
+                }
+            }
+        }
+    };
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
@@ -143,8 +166,8 @@ export function Sidebar() {
                                 <span className="text-xl font-black text-white tracking-tight">
                                     CLBC Portal
                                 </span>
-                                <span className="text-[10px] text-[#D5AB45] font-bold tracking-widest uppercase">
-                                    Official App
+                                <span className="text-[10px] text-[#D5AB45] font-bold tracking-widest uppercase truncate max-w-[140px]">
+                                    {branchName || 'Official App'}
                                 </span>
                             </div>
                         )}
@@ -153,7 +176,7 @@ export function Sidebar() {
 
                 {/* Navigation Items */}
                 <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto custom-scrollbar">
-                    {navItems.map((item) => {
+                    {navItems.filter(item => !(item as any).adminOnly || userRole === 'super_admin').map((item) => {
                         const isActive = pathname === item.href;
                         return (
                             <Link
