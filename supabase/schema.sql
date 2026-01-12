@@ -208,12 +208,19 @@ RETURNS UUID AS $$
 $$ LANGUAGE sql STABLE SECURITY DEFINER;
 
 -- Forms
-CREATE POLICY "Anyone can view active forms"
+CREATE POLICY "Public can view active forms for submission"
   ON public.forms FOR SELECT
+  TO anon
   USING (status = 'active');
 
 CREATE POLICY "Admins can manage their branch forms"
   ON public.forms FOR ALL
+  TO authenticated
+  USING (branch_id = public.get_user_branch_id());
+
+-- Events
+CREATE POLICY "Admins can manage their branch events"
+  ON public.events FOR ALL
   TO authenticated
   USING (branch_id = public.get_user_branch_id());
 
