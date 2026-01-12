@@ -15,7 +15,9 @@ export default function BranchesPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [newBranch, setNewBranch] = useState({ name: '', location: '' });
+    const [editingBranch, setEditingBranch] = useState<any>(null);
     const supabase = createClient();
 
     useEffect(() => {
@@ -69,6 +71,27 @@ export default function BranchesPage() {
             toast.error('Failed to delete branch. Ensure it has no linked data.');
         } else {
             toast.success('Branch deleted');
+            fetchBranches();
+        }
+    };
+
+    const handleEditBranch = async () => {
+        if (!editingBranch?.name) {
+            toast.error('Branch name is required');
+            return;
+        }
+
+        const { error } = await supabase
+            .from('branches')
+            .update({ name: editingBranch.name, location: editingBranch.location })
+            .eq('id', editingBranch.id);
+
+        if (error) {
+            toast.error('Failed to update branch');
+        } else {
+            toast.success('Branch updated successfully');
+            setIsEditDialogOpen(false);
+            setEditingBranch(null);
             fetchBranches();
         }
     };
@@ -160,6 +183,17 @@ export default function BranchesPage() {
                                         <Building2 size={24} />
                                     </div>
                                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50 rounded-full"
+                                            onClick={() => {
+                                                setEditingBranch(branch);
+                                                setIsEditDialogOpen(true);
+                                            }}
+                                        >
+                                            <Edit2 size={16} />
+                                        </Button>
                                         <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full" onClick={() => handleDeleteBranch(branch.id, branch.name)}>
                                             <Trash2 size={16} />
                                         </Button>
@@ -178,6 +212,40 @@ export default function BranchesPage() {
                     ))}
                 </div>
             )}
+
+            {/* Edit Branch Dialog */}
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogContent className="rounded-3xl">
+                    <DialogHeader>
+                        <DialogTitle>Edit Branch</DialogTitle>
+                        <DialogDescription>Update the details for this church branch.</DialogDescription>
+                    </DialogHeader>
+                    {editingBranch && (
+                        <div className="space-y-4 py-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-name">Branch Name</Label>
+                                <Input
+                                    id="edit-name"
+                                    value={editingBranch.name}
+                                    onChange={(e) => setEditingBranch({ ...editingBranch, name: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-location">Location / Address</Label>
+                                <Input
+                                    id="edit-location"
+                                    value={editingBranch.location || ''}
+                                    onChange={(e) => setEditingBranch({ ...editingBranch, location: e.target.value })}
+                                />
+                            </div>
+                        </div>
+                    )}
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+                        <Button onClick={handleEditBranch} className="bg-[#001D86]">Save Changes</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

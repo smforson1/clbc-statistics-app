@@ -257,10 +257,12 @@ BEGIN
   -- 1. Create default branch if none exists
   IF NOT EXISTS (SELECT 1 FROM public.branches LIMIT 1) THEN
     INSERT INTO public.branches (name, location)
-    VALUES ('CLBC Main', 'Main Campus')
+    VALUES ('CLBC Kumasi Network', 'Kumasi KNUST Campus')
     RETURNING id INTO default_branch_id;
   ELSE
     SELECT id INTO default_branch_id FROM public.branches ORDER BY created_at LIMIT 1;
+    -- Optionally rename it if it was still the default name
+    UPDATE public.branches SET name = 'CLBC Kumasi Network' WHERE id = default_branch_id AND name = 'CLBC Main';
   END IF;
 
   -- 2. Assign existing data to default branch
