@@ -171,6 +171,21 @@ ALTER TABLE public.branches ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Branches are viewable by authenticated users." ON public.branches
   FOR SELECT TO authenticated USING (true);
 
+CREATE POLICY "Super admins can insert branches." ON public.branches
+  FOR INSERT TO authenticated WITH CHECK (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'super_admin')
+  );
+
+CREATE POLICY "Super admins can update branches." ON public.branches
+  FOR UPDATE TO authenticated USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'super_admin')
+  );
+
+CREATE POLICY "Super admins can delete branches." ON public.branches
+  FOR DELETE TO authenticated USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'super_admin')
+  );
+
 -- Member Ministries
 CREATE POLICY "Admins can manage their branch member ministries"
   ON public.member_ministries FOR ALL
