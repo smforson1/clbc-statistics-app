@@ -1,3 +1,6 @@
+-- Extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 -- Branches
 CREATE TABLE IF NOT EXISTS public.branches (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -330,20 +333,26 @@ DECLARE
   target_branch_id UUID;
 BEGIN
   -- Extract branch_id from user metadata if provided
-  target_branch_id := (new.raw_user_meta_data->>'branch_id')::UUID;
+  -- NULLIF handles empty strings which cause UUID cast errors
+  target_branch_id := NULLIF(new.raw_user_meta_data->>'branch_id', '')::UUID;
 
   -- Default to the first branch if none provided
   IF target_branch_id IS NULL THEN
     SELECT id INTO target_branch_id FROM public.branches ORDER BY created_at LIMIT 1;
   END IF;
 
+  -- Final safety check to prevent "Database error" on user creation
+  IF target_branch_id IS NULL THEN
+    RAISE EXCEPTION 'Cannot create user: No branches found. Please create at least one branch in public.branches table first.';
+  END IF;
+
   INSERT INTO public.profiles (id, email, full_name, branch_id, role)
   VALUES (
     new.id,
     new.email,
-    COALESCE(new.raw_user_meta_data->>'full_name', new.email),
+    COALESCE(NULLIF(new.raw_user_meta_data->>'full_name', ''), new.email),
     target_branch_id,
-    COALESCE(new.raw_user_meta_data->>'role', 'admin')
+    COALESCE(NULLIF(new.raw_user_meta_data->>'role', ''), 'admin')
   );
   RETURN new;
 END;
