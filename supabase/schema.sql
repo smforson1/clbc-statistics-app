@@ -273,6 +273,48 @@ CREATE POLICY "Admins can manage their branch messages"
   TO authenticated
   USING (branch_id = public.get_user_branch_id());
 
+-- LOGISTICS MODULE
+CREATE TABLE IF NOT EXISTS public.logistics_assets (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  category VARCHAR(100), -- e.g., Electronics, Furniture, Musical Instruments
+  quantity INTEGER DEFAULT 1,
+  condition VARCHAR(50) DEFAULT 'New', -- e.g., New, Good, Used, Faulty
+  location VARCHAR(255),
+  notes TEXT,
+  branch_id UUID NOT NULL REFERENCES public.branches(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.logistics_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  asset_id UUID REFERENCES public.logistics_assets(id) ON DELETE CASCADE,
+  requester_name VARCHAR(255) NOT NULL,
+  quantity INTEGER DEFAULT 1,
+  request_date DATE NOT NULL,
+  return_date DATE,
+  status VARCHAR(50) DEFAULT 'pending', -- pending, approved, out, returned, rejected
+  notes TEXT,
+  branch_id UUID NOT NULL REFERENCES public.branches(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- RLS for Logistics
+ALTER TABLE public.logistics_assets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.logistics_requests ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admins can manage their branch assets"
+  ON public.logistics_assets FOR ALL
+  TO authenticated
+  USING (branch_id = public.get_user_branch_id());
+
+CREATE POLICY "Admins can manage their branch logistics requests"
+  ON public.logistics_requests FOR ALL
+  TO authenticated
+  USING (branch_id = public.get_user_branch_id());
+
 -- DATA MIGRATION & INITIALIZATION
 -- This part should be run once. In a real migration, you'd use a more robust script.
 DO $$
@@ -318,6 +360,8 @@ CREATE TRIGGER tr_events_set_branch BEFORE INSERT ON public.events FOR EACH ROW 
 CREATE TRIGGER tr_messages_set_branch BEFORE INSERT ON public.messages FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
 CREATE TRIGGER tr_prayer_requests_set_branch BEFORE INSERT ON public.prayer_requests FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
 CREATE TRIGGER tr_activity_log_set_branch BEFORE INSERT ON public.activity_log FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
+CREATE TRIGGER tr_logistics_assets_set_branch BEFORE INSERT ON public.logistics_assets FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
+CREATE TRIGGER tr_logistics_requests_set_branch BEFORE INSERT ON public.logistics_requests FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
 
 -- SPECIAL TRIGGER FOR FORM RESPONSES (Anonymous Submissions)
 CREATE OR REPLACE FUNCTION public.set_form_response_branch_id()

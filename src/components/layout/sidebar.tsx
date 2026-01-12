@@ -17,7 +17,8 @@ import {
     Menu,
     X,
     Heart,
-    Send
+    Send,
+    Package
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase';
@@ -32,6 +33,7 @@ const navItems = [
     { icon: Send, label: 'Broadcast', href: '/broadcast' },
     { icon: Users, label: 'Members', href: '/members' },
     { icon: Calendar, label: 'Events', href: '/events' },
+    { icon: Package, label: 'Logistics', href: '/logistics' },
     { icon: Church, label: 'Branches', href: '/branches', adminOnly: true },
     { icon: Settings, label: 'Settings', href: '/settings' },
 ];
