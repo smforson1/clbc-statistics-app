@@ -412,3 +412,66 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- AUTOMATIC PRAYER REQUEST EXTRACTION FROM FORM RESPONSES
+CREATE OR REPLACE FUNCTION public.handle_prayer_request_from_response()
+RETURNS trigger AS $$
+DECLARE
+  field RECORD;
+  prayer_field_id TEXT := NULL;
+  name_field_id TEXT := NULL;
+  email_field_id TEXT := NULL;
+  prayer_content TEXT;
+  requester_name TEXT;
+  requester_email TEXT;
+  f_schema JSONB;
+  f_branch_id UUID;
+BEGIN
+  -- 1. Get the form schema and branch_id
+  SELECT form_schema, branch_id INTO f_schema, f_branch_id 
+  FROM public.forms 
+  WHERE id = NEW.form_id;
+
+  -- 2. Identify fields by labels (case-insensitive)
+  FOR field IN SELECT * FROM jsonb_to_recordset(f_schema) AS x(id TEXT, type TEXT, label TEXT)
+  LOOP
+    IF field.label ILIKE '%prayer request%' OR field.label ILIKE '%pray with you%' THEN
+      prayer_field_id := field.id;
+    ELSIF field.label ILIKE '%full name%' OR field.label ILIKE '%your name%' OR (field.label ILIKE '%name%' AND field.type = 'text') THEN
+      name_field_id := field.id;
+    ELSIF field.label ILIKE '%email%' THEN
+      email_field_id := field.id;
+    END IF;
+  END LOOP;
+
+  -- 3. Extract data if prayer request field exists and has content
+  IF prayer_field_id IS NOT NULL AND NEW.response_data->>prayer_field_id IS NOT NULL AND NEW.response_data->>prayer_field_id <> '' THEN
+    prayer_content := NEW.response_data->>prayer_field_id;
+    requester_name := COALESCE(NEW.response_data->>name_field_id, 'Anonymous');
+    requester_email := NEW.response_data->>email_field_id;
+
+    -- 4. Insert into prayer_requests
+    INSERT INTO public.prayer_requests (
+      requester_name,
+      requester_email,
+      request_content,
+      branch_id,
+      status,
+      is_anonymous
+    ) VALUES (
+      requester_name,
+      requester_email,
+      prayer_content,
+      COALESCE(NEW.branch_id, f_branch_id),
+      'pending',
+      (requester_name = 'Anonymous')
+    );
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER tr_on_form_response_check_prayer
+  AFTER INSERT ON public.form_responses
+  FOR EACH ROW EXECUTE FUNCTION public.handle_prayer_request_from_response();
