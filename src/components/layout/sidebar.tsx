@@ -66,10 +66,12 @@ export function Sidebar() {
             // Threshold for horizontal swipe (50px) and must be more horizontal than vertical
             if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
                 if (deltaX > 0) {
-                    // Swipe Right -> Open
-                    setIsOpen(true);
+                    // Swipe Right -> Open (Only if started from the left half of the screen)
+                    if (touchStartX <= window.innerWidth / 2) {
+                        setIsOpen(true);
+                    }
                 } else {
-                    // Swipe Left -> Close
+                    // Swipe Left -> Close (Always allowed)
                     setIsOpen(false);
                 }
             }
