@@ -221,29 +221,56 @@ export default function PublicFormPage() {
                                                 variant={formData[field.id] === false ? 'default' : 'outline'}
                                                 className={cn(
                                                     "flex-1 h-14 rounded-2xl text-lg font-bold transition-all",
-                                                    formData[field.id] === false ? "bg-gray-800 border-none shadow-lg scale-105" : "border-gray-200 bg-white text-gray-400"
+                                                    formData[field.id] === false ? "bg-gray-800 border-none shadow-lg scale-105 text-white" : "border-gray-200 bg-white text-gray-400"
                                                 )}
                                                 onClick={() => handleInputChange(field.id, false)}
                                             >
                                                 No
                                             </Button>
                                         </div>
-                                    ) : field.type === 'select' || field.type === 'radio' ? (
-                                        <div className="grid grid-cols-1 gap-2">
+                                    ) : field.type === 'select' ? (
+                                        <div className="relative group">
+                                            <select
+                                                className="w-full h-14 rounded-2xl border border-gray-200 bg-white/50 px-6 text-lg focus:ring-4 focus:ring-[#001D86]/10 focus:border-[#001D86] transition-all outline-none appearance-none cursor-pointer"
+                                                required={field.required}
+                                                value={formData[field.id] || ''}
+                                                onChange={(e) => handleInputChange(field.id, e.target.value)}
+                                            >
+                                                <option value="" disabled>{field.placeholder || 'Select an option'}</option>
+                                                {(field.options || []).map((option: string) => (
+                                                    <option key={option} value={option}>{option}</option>
+                                                ))}
+                                            </select>
+                                            <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 group-focus-within:text-[#001D86]">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                                            </div>
+                                        </div>
+                                    ) : field.type === 'radio' ? (
+                                        <div className="grid grid-cols-1 gap-3">
                                             {(field.options || ['Option 1', 'Option 2']).map((option: string) => (
                                                 <button
                                                     key={option}
                                                     type="button"
                                                     className={cn(
-                                                        "w-full text-left p-4 rounded-2xl border-2 transition-all font-semibold flex items-center justify-between",
+                                                        "w-full text-left p-5 rounded-2xl border-2 transition-all font-bold flex items-center justify-between group/btn shadow-sm",
                                                         formData[field.id] === option
-                                                            ? "border-[#001D86] bg-blue-50 text-[#001D86]"
-                                                            : "border-gray-100 bg-gray-50/50 text-gray-600 hover:border-gray-200"
+                                                            ? "border-[#001D86] bg-blue-50 text-[#001D86] ring-4 ring-blue-500/5 scale-[1.01]"
+                                                            : "border-gray-100 bg-white text-gray-600 hover:border-gray-200 hover:bg-gray-50/50"
                                                     )}
                                                     onClick={() => handleInputChange(field.id, option)}
                                                 >
-                                                    {option}
-                                                    {formData[field.id] === option && <CheckCircle2 size={18} />}
+                                                    <div className="flex items-center gap-4">
+                                                        <div className={cn(
+                                                            "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
+                                                            formData[field.id] === option
+                                                                ? "border-[#001D86] bg-[#001D86]"
+                                                                : "border-gray-300 bg-white group-hover/btn:border-gray-400"
+                                                        )}>
+                                                            {formData[field.id] === option && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+                                                        </div>
+                                                        {option}
+                                                    </div>
+                                                    {formData[field.id] === option && <CheckCircle2 size={20} className="text-[#001D86] animate-in zoom-in duration-300" />}
                                                 </button>
                                             ))}
                                         </div>

@@ -374,10 +374,41 @@ export default function CreateFormPage() {
                                                                 </div>
                                                                 <div className="space-y-1">
                                                                     <Label className="text-xs text-gray-400 font-bold uppercase">Type: <Badge variant="secondary" className="ml-1 text-[10px]">{field.type}</Badge></Label>
-                                                                    {['select', 'radio'].includes(field.type) && (
-                                                                        <div className="flex gap-2 items-center">
-                                                                            <span className="text-xs text-[#001D86] font-medium whitespace-nowrap">Edit Options</span>
-                                                                            <HelpCircle size={14} className="text-gray-300" />
+                                                                    {['select', 'radio', 'checkbox'].includes(field.type) && (
+                                                                        <div className="space-y-2 mt-2">
+                                                                            <div className="flex flex-wrap gap-2">
+                                                                                {(field.options || []).map((option, optIndex) => (
+                                                                                    <div key={optIndex} className="flex items-center bg-blue-50 text-[#001D86] pl-3 pr-1 py-1 rounded-full text-xs font-bold border border-blue-100 group/opt">
+                                                                                        {option}
+                                                                                        <button
+                                                                                            onClick={() => {
+                                                                                                const newOptions = [...(field.options || [])];
+                                                                                                newOptions.splice(optIndex, 1);
+                                                                                                updateField(field.id, { options: newOptions });
+                                                                                            }}
+                                                                                            className="ml-2 p-1 hover:bg-blue-200 rounded-full transition-colors"
+                                                                                        >
+                                                                                            <Trash2 size={12} className="text-[#001D86]" />
+                                                                                        </button>
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                            <div className="flex gap-2">
+                                                                                <Input
+                                                                                    placeholder="Add option..."
+                                                                                    className="h-8 text-xs rounded-lg"
+                                                                                    onKeyDown={(e) => {
+                                                                                        if (e.key === 'Enter') {
+                                                                                            e.preventDefault();
+                                                                                            const val = (e.target as HTMLInputElement).value.trim();
+                                                                                            if (val) {
+                                                                                                updateField(field.id, { options: [...(field.options || []), val] });
+                                                                                                (e.target as HTMLInputElement).value = '';
+                                                                                            }
+                                                                                        }
+                                                                                    }}
+                                                                                />
+                                                                            </div>
                                                                         </div>
                                                                     )}
                                                                 </div>
@@ -451,14 +482,26 @@ export default function CreateFormPage() {
                                     ) : field.type === 'select' ? (
                                         <select className="w-full h-12 p-3 rounded-xl border border-gray-200 bg-white appearance-none" disabled>
                                             <option>{field.placeholder || "Select an option"}</option>
+                                            {(field.options || []).map((opt) => (
+                                                <option key={opt}>{opt}</option>
+                                            ))}
                                         </select>
+                                    ) : field.type === 'radio' ? (
+                                        <div className="space-y-2">
+                                            {(field.options || ['Option 1', 'Option 2']).map((opt) => (
+                                                <div key={opt} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 bg-white">
+                                                    <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                                                    <span className="text-sm font-medium text-gray-700">{opt}</span>
+                                                </div>
+                                            ))}
+                                        </div>
                                     ) : field.type === 'boolean' ? (
                                         <div className="flex gap-4">
                                             <Button variant="outline" className="flex-1 rounded-xl h-12" disabled>Yes</Button>
                                             <Button variant="outline" className="flex-1 rounded-xl h-12" disabled>No</Button>
                                         </div>
                                     ) : (
-                                        <Input className="h-12 rounded-xl" placeholder={field.placeholder} disabled />
+                                        <Input type={field.type} className="h-12 rounded-xl" placeholder={field.placeholder} disabled />
                                     )}
                                 </div>
                             ))}
