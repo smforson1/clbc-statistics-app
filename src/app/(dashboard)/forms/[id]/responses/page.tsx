@@ -83,7 +83,7 @@ export default function ResponsesPage() {
 
         const { data: respData, error: respError } = await supabase
             .from('form_responses')
-            .select('*')
+            .select('*, submitter:profiles(full_name, email)')
             .eq('form_id', id)
             .order('submitted_at', { ascending: false });
 
@@ -213,6 +213,7 @@ export default function ResponsesPage() {
                                     <TableHeader className="bg-gray-50/50">
                                         <TableRow>
                                             <TableHead className="font-bold text-gray-900 px-6 py-4">Submitted At</TableHead>
+                                            <TableHead className="font-bold text-gray-900 px-6 py-4">Submitter</TableHead>
                                             {form.form_schema.map((field: any) => (
                                                 <TableHead key={field.id} className="font-bold text-gray-900 px-6 py-4">
                                                     <div className="flex items-center gap-2">
@@ -226,7 +227,7 @@ export default function ResponsesPage() {
                                     <TableBody>
                                         {responses.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={form.form_schema.length + 1} className="h-48 text-center text-gray-500">
+                                                <TableCell colSpan={form.form_schema.length + 2} className="h-48 text-center text-gray-500">
                                                     No responses yet.
                                                 </TableCell>
                                             </TableRow>
@@ -235,6 +236,16 @@ export default function ResponsesPage() {
                                                 <TableRow key={r.id} className="hover:bg-blue-50/30 transition-colors">
                                                     <TableCell className="whitespace-nowrap px-6 py-4 font-medium text-gray-600">
                                                         {new Date(r.submitted_at).toLocaleString()}
+                                                    </TableCell>
+                                                    <TableCell className="px-6 py-4">
+                                                        {r.submitter ? (
+                                                            <div className="flex flex-col">
+                                                                <span className="font-bold text-gray-900">{r.submitter.full_name}</span>
+                                                                <span className="text-xs text-gray-500">{r.submitter.email}</span>
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-gray-400 italic">Anonymous</span>
+                                                        )}
                                                     </TableCell>
                                                     {form.form_schema.map((field: any) => (
                                                         <TableCell key={field.id} className="px-6 py-4 text-gray-900">

@@ -20,7 +20,16 @@ export default function PublicFormPage() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [alreadySubmitted, setAlreadySubmitted] = useState(false);
     const [formData, setFormData] = useState<Record<string, any>>({});
+    const [user, setUser] = useState<any>(null);
     const supabase = createClient();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        };
+        checkUser();
+    }, []);
 
     useEffect(() => {
         fetchForm();
@@ -71,6 +80,7 @@ export default function PublicFormPage() {
                 form_id: id,
                 response_data: formData,
                 submitted_at: new Date().toISOString(),
+                submitter_id: user?.id || null,
             });
 
         if (error) {
@@ -185,6 +195,16 @@ export default function PublicFormPage() {
                     <CardHeader className="bg-white/50 border-b border-gray-50 px-8 py-6">
                         <CardTitle className="text-lg font-bold">Please provide your details</CardTitle>
                         <CardDescription>Fields marked with * are required</CardDescription>
+                        {user && (
+                            <div className="mt-4 flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-2xl p-4 animate-in slide-in-from-top duration-500">
+                                <div className="p-2 bg-[#001D86]/10 rounded-full">
+                                    <CheckCircle2 className="w-5 h-5 text-[#001D86]" />
+                                </div>
+                                <p className="text-sm font-medium text-gray-700">
+                                    Recording response for <span className="font-bold text-[#001D86] decoration-[#D5AB45] underline underline-offset-4">{user.email}</span>
+                                </p>
+                            </div>
+                        )}
                     </CardHeader>
                     <form onSubmit={handleSubmit}>
                         <CardContent className="p-8 space-y-8">

@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS public.form_responses (
   submitted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   submitter_ip VARCHAR(45),
   submitter_user_agent TEXT,
+  submitter_id UUID REFERENCES public.profiles(id),
   branch_id UUID NOT NULL REFERENCES public.branches(id)
 );
 
