@@ -21,7 +21,10 @@ import {
     Mail,
     Phone,
     HelpCircle,
-    LayoutTemplate
+    LayoutTemplate,
+    User,
+    CheckCircle2,
+    Home
 } from 'lucide-react';
 import {
     Dialog,
@@ -91,6 +94,33 @@ const templates = [
             { id: 'name', type: 'text', label: 'Full Name', required: true, placeholder: 'Your name' },
             { id: 'phone', type: 'phone', label: 'Phone Number', required: false },
             { id: 'request', type: 'textarea', label: 'Prayer Request', required: true, placeholder: 'Tell us how we can pray...' },
+        ] as FormField[]
+    },
+    {
+        id: 'simple-attendance',
+        title: 'Simple Attendance',
+        description: 'Quick check-in form for services and meetings.',
+        icon: CheckCircle2,
+        fields: [
+            { id: 'name', type: 'text', label: 'Full Name', required: true, placeholder: 'Enter your name' },
+            { id: 'status', type: 'radio', label: 'Attendance Status', required: true, options: ['Present', 'Excused'] },
+            { id: 'notes', type: 'text', label: 'Brief Note (Optional)', required: false, placeholder: 'Any reason for late arrival, etc.' },
+        ] as FormField[]
+    },
+    {
+        id: 'member-onboarding',
+        title: 'Detailed Member Info',
+        description: 'Comprehensive personal information form for new and existing members.',
+        icon: User,
+        fields: [
+            { id: 'name', type: 'text', label: 'Full Name', required: true, placeholder: 'First Name & Last Name' },
+            { id: 'dob', type: 'date', label: 'Date of Birth', required: true, helpText: 'We need this to celebrate you on your birthday!' },
+            { id: 'gender', type: 'radio', label: 'Gender', required: true, options: ['Male', 'Female'] },
+            { id: 'phone', type: 'phone', label: 'Primary Phone Number', required: true, placeholder: '024 000 0000' },
+            { id: 'email', type: 'email', label: 'Email Address', required: false, placeholder: 'yourname@example.com' },
+            { id: 'address', type: 'text', label: 'Residential Address', required: false, placeholder: 'e.g. Plot 12, Sobolo St.' },
+            { id: 'ministry', type: 'select', label: 'Department/Ministry', required: false, options: ['Media', 'Worship/Choir', 'Ushering', 'Protocol', 'Intercession', 'Children', 'None yet'] },
+            { id: 'emergency_contact', type: 'text', label: 'Emergency Contact Name & Phone', required: false },
         ] as FormField[]
     }
 ];
