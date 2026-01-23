@@ -208,7 +208,7 @@ export default function LiveTestimoniesPage() {
                                                 </div>
                                                 <Button
                                                     variant="outline"
-                                                    className="rounded-xl border-gray-700 hover:bg-green-900/30 hover:text-green-400 hover:border-green-800 transition-all font-bold"
+                                                    className="rounded-xl border-gray-500 text-gray-300 bg-transparent hover:bg-green-900/30 hover:text-green-400 hover:border-green-500 transition-all font-bold"
                                                     onClick={() => markAsShared(t.id, t.testifier_name)}
                                                 >
                                                     <CheckCircle2 className="mr-2" /> Mark Read
