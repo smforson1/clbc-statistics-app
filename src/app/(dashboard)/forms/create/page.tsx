@@ -24,7 +24,8 @@ import {
     LayoutTemplate,
     User,
     CheckCircle2,
-    Home
+    Home,
+    Mic2
 } from 'lucide-react';
 import {
     Dialog,
@@ -121,6 +122,18 @@ const templates = [
             { id: 'address', type: 'text', label: 'Residential Address', required: false, placeholder: 'e.g. Plot 12, Sobolo St.' },
             { id: 'ministry', type: 'select', label: 'Department/Ministry', required: false, options: ['Media', 'Worship/Choir', 'Ushering', 'Protocol', 'Intercession', 'Children', 'None yet'] },
             { id: 'emergency_contact', type: 'text', label: 'Emergency Contact Name & Phone', required: false },
+        ] as FormField[]
+    },
+    {
+        id: 'testimony-submission',
+        title: 'Testimony Submission',
+        description: 'Share your testimony with the church.',
+        icon: Mic2,
+        fields: [
+            { id: 'name', type: 'text', label: 'Full Name', required: true, placeholder: 'Your name' },
+            { id: 'contact', type: 'phone', label: 'Contact Number', required: true, placeholder: 'So we can reach you' },
+            { id: 'testimony', type: 'textarea', label: 'Share Your Story', required: true, placeholder: 'Type your testimony here...' },
+            { id: 'preference', type: 'radio', label: 'How would you like to share?', required: true, options: ['I want to share in person', 'Please read it for me'] },
         ] as FormField[]
     }
 ];

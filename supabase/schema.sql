@@ -476,3 +476,104 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER tr_on_form_response_check_prayer
   AFTER INSERT ON public.form_responses
   FOR EACH ROW EXECUTE FUNCTION public.handle_prayer_request_from_response();
+
+-- TESTIMONIES TABLE
+CREATE TABLE testimonies (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  testifier_name TEXT NOT NULL,
+  content TEXT NOT NULL,
+  contact_info TEXT,
+  share_preference TEXT DEFAULT 'in_person', -- Options: in_person, read_only
+  status TEXT DEFAULT 'pending', -- Options: pending, approved, shared, archived
+  admin_notes TEXT,
+  branch_id UUID NOT NULL REFERENCES public.branches(id),
+  submitter_id UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+);
+
+ALTER TABLE testimonies ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their branch testimonies"
+  ON testimonies FOR SELECT
+  USING (branch_id = public.get_user_branch_id());
+
+CREATE POLICY "Authenticated users can update their branch testimonies"
+  ON testimonies FOR UPDATE
+  USING (branch_id = public.get_user_branch_id());
+
+-- AUTOMATIC TESTIMONY EXTRACTION FROM FORM RESPONSES
+CREATE OR REPLACE FUNCTION public.handle_testimony_from_response()
+RETURNS trigger AS $$
+DECLARE
+  field RECORD;
+  testimony_field_id TEXT := NULL;
+  name_field_id TEXT := NULL;
+  preference_field_id TEXT := NULL;
+  contact_field_id TEXT := NULL;
+  testimony_content TEXT;
+  testifier_name TEXT;
+  share_preference TEXT := 'in_person';
+  contact_info TEXT;
+  f_schema JSONB;
+  f_branch_id UUID;
+BEGIN
+  -- 1. Get the form schema and branch_id
+  SELECT form_schema, branch_id INTO f_schema, f_branch_id 
+  FROM public.forms 
+  WHERE id = NEW.form_id;
+
+  -- 2. Identify fields by labels (case-insensitive)
+  FOR field IN SELECT * FROM jsonb_to_recordset(f_schema) AS x(id TEXT, type TEXT, label TEXT)
+  LOOP
+    IF field.label ILIKE '%testimony%' OR field.label ILIKE '%share your story%' THEN
+      testimony_field_id := field.id;
+    ELSIF field.label ILIKE '%full name%' OR field.label ILIKE '%your name%' OR (field.label ILIKE '%name%' AND field.type = 'text') THEN
+      name_field_id := field.id;
+    ELSIF field.label ILIKE '%share%' OR field.label ILIKE '%preference%' OR field.label ILIKE '%read%' THEN
+      preference_field_id := field.id;
+    ELSIF field.label ILIKE '%phone%' OR field.label ILIKE '%contact%' THEN
+        contact_field_id := field.id;
+    END IF;
+  END LOOP;
+
+  -- 3. Extract data if testimony field exists and has content
+  IF testimony_field_id IS NOT NULL AND NEW.response_data->>testimony_field_id IS NOT NULL AND NEW.response_data->>testimony_field_id <> '' THEN
+    testimony_content := NEW.response_data->>testimony_field_id;
+    testifier_name := COALESCE(NEW.response_data->>name_field_id, 'Anonymous');
+    contact_info := NEW.response_data->>contact_field_id;
+    
+    -- Try to parse preference if available
+    IF preference_field_id IS NOT NULL THEN
+       IF NEW.response_data->>preference_field_id ILIKE '%read%' THEN
+          share_preference := 'read_only';
+       END IF;
+    END IF;
+
+    -- 4. Insert into testimonies
+    INSERT INTO public.testimonies (
+      testifier_name,
+      content,
+      contact_info,
+      share_preference,
+      branch_id,
+      submitter_id,
+      status
+    ) VALUES (
+      testifier_name,
+      testimony_content,
+      contact_info,
+      share_preference,
+      COALESCE(NEW.branch_id, f_branch_id),
+      NEW.submitter_id,
+      'pending'
+    );
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER tr_on_form_response_check_testimony
+  AFTER INSERT ON public.form_responses
+  FOR EACH ROW EXECUTE FUNCTION public.handle_testimony_from_response();
