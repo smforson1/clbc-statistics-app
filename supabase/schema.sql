@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS public.branches (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(255) NOT NULL,
   location VARCHAR(255),
+  settings JSONB DEFAULT '{}'::jsonb,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -517,11 +518,17 @@ DECLARE
   contact_info TEXT;
   f_schema JSONB;
   f_branch_id UUID;
+  auto_approve BOOLEAN := FALSE;
 BEGIN
   -- 1. Get the form schema and branch_id
   SELECT form_schema, branch_id INTO f_schema, f_branch_id 
   FROM public.forms 
   WHERE id = NEW.form_id;
+
+  -- Check for auto-approve setting on the branch
+  SELECT COALESCE((settings->>'auto_approve_testimony')::boolean, FALSE) INTO auto_approve
+  FROM public.branches
+  WHERE id = COALESCE(NEW.branch_id, f_branch_id);
 
   -- 2. Identify fields by labels (case-insensitive)
   FOR field IN SELECT * FROM jsonb_to_recordset(f_schema) AS x(id TEXT, type TEXT, label TEXT)
@@ -566,7 +573,7 @@ BEGIN
       share_preference,
       COALESCE(NEW.branch_id, f_branch_id),
       NEW.submitter_id,
-      'pending'
+      CASE WHEN auto_approve THEN 'approved' ELSE 'pending' END
     );
   END IF;
 

@@ -33,15 +33,19 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export default function TestimoniesPage() {
     const [testimonies, setTestimonies] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [autoApprove, setAutoApprove] = useState(false);
     const supabase = createClient();
 
     useEffect(() => {
         fetchTestimonies();
+        fetchBranchSettings();
     }, []);
 
     const fetchTestimonies = async () => {
@@ -57,6 +61,55 @@ export default function TestimoniesPage() {
             setTestimonies(data || []);
         }
         setIsLoading(false);
+    };
+
+    const fetchBranchSettings = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('branch_id, branch:branches(settings)')
+            .eq('id', user.id)
+            .single();
+
+        if (data?.branch) {
+            const branchSettings = (data.branch as any).settings;
+            if (branchSettings) {
+                setAutoApprove(branchSettings.auto_approve_testimony || false);
+            }
+        }
+    };
+
+    const toggleAutoApprove = async (checked: boolean) => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        // Optimistic update
+        setAutoApprove(checked);
+
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('branch_id, branch:branches(settings)')
+            .eq('id', user.id)
+            .single();
+
+        if (!profile) return;
+
+        const currentSettings = (profile.branch as any).settings || {};
+        const newSettings = { ...currentSettings, auto_approve_testimony: checked };
+
+        const { error } = await supabase
+            .from('branches')
+            .update({ settings: newSettings })
+            .eq('id', profile.branch_id);
+
+        if (error) {
+            toast.error('Failed to switch auto-approve');
+            setAutoApprove(!checked); // Revert
+        } else {
+            toast.success(checked ? 'Auto-approve enabled' : 'Auto-approve disabled');
+        }
     };
 
     const updateStatus = async (id: string, newStatus: string) => {
