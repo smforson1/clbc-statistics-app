@@ -503,6 +503,14 @@ CREATE POLICY "Authenticated users can update their branch testimonies"
   ON testimonies FOR UPDATE
   USING (branch_id = public.get_user_branch_id());
 
+CREATE POLICY "Anyone can submit a testimony"
+  ON testimonies FOR INSERT
+  TO anon
+  WITH CHECK (true);
+
+CREATE TRIGGER tr_testimonies_set_branch BEFORE INSERT ON public.testimonies FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
+
+
 -- AUTOMATIC TESTIMONY EXTRACTION FROM FORM RESPONSES
 CREATE OR REPLACE FUNCTION public.handle_testimony_from_response()
 RETURNS trigger AS $$
@@ -584,3 +592,31 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE TRIGGER tr_on_form_response_check_testimony
   AFTER INSERT ON public.form_responses
   FOR EACH ROW EXECUTE FUNCTION public.handle_testimony_from_response();
+
+-- FOLLOW-UPS MODULE
+CREATE TABLE IF NOT EXISTS public.follow_ups (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  member_id UUID REFERENCES public.members(id) ON DELETE CASCADE,
+  visitor_name VARCHAR(255) NOT NULL,
+  phone VARCHAR(50),
+  email VARCHAR(255),
+  residence VARCHAR(255),
+  first_visit_date DATE DEFAULT CURRENT_DATE,
+  stage VARCHAR(50) DEFAULT 'new_visitor', -- 'new_visitor', 'contacted', 'visited', 'foundation_class', 'integrated'
+  assigned_to VARCHAR(255),
+  notes TEXT,
+  interaction_history JSONB DEFAULT '[]'::jsonb,
+  branch_id UUID NOT NULL REFERENCES public.branches(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.follow_ups ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admins can manage their branch follow ups"
+  ON public.follow_ups FOR ALL
+  TO authenticated
+  USING (branch_id = public.get_user_branch_id());
+
+CREATE TRIGGER tr_follow_ups_set_branch BEFORE INSERT ON public.follow_ups FOR EACH ROW EXECUTE FUNCTION public.set_branch_id();
+

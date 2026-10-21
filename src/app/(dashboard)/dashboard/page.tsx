@@ -24,6 +24,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { BirthdayRadar } from '@/components/dashboard/birthday-radar';
 
 
 
@@ -268,6 +269,31 @@ export default function DashboardPage() {
                             )}
                         </div>
                     </CardContent>
+                </Card>
+            </div>
+
+            {/* Birthday Radar & Follow-Up Quick Link */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <BirthdayRadar />
+                <Card className="shadow-sm border-none bg-gradient-to-br from-[#001D86] to-[#0a2540] text-white rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-[#D5AB45] rounded-full blur-[80px] opacity-20 -mr-16 -mt-16 pointer-events-none" />
+                    <div className="space-y-3 relative z-10">
+                        <span className="bg-[#D5AB45] text-[#001D86] font-black text-[11px] px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+                            Soul Winning & Retention
+                        </span>
+                        <h3 className="text-2xl font-black tracking-tight">First-Timers & Converts Pipeline</h3>
+                        <p className="text-blue-100/80 text-sm leading-relaxed max-w-md">
+                            Monitor every soul from their first Sunday visit to hostel visit, discipleship classes, and full integration into church life.
+                        </p>
+                    </div>
+                    <div className="pt-6 relative z-10">
+                        <Link href="/follow-up">
+                            <Button className="bg-white hover:bg-[#D5AB45] text-[#001D86] hover:text-white font-black rounded-2xl h-12 px-6 gap-2 shadow-lg transition-all">
+                                Open Follow-Up Pipeline
+                                <ArrowUpRight size={18} />
+                            </Button>
+                        </Link>
+                    </div>
                 </Card>
             </div>
         </div>

@@ -19,7 +19,8 @@ import {
     Heart,
     Send,
     Package,
-    Mic2
+    Mic2,
+    UserPlus
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase';
@@ -34,6 +35,7 @@ const navItems = [
     { icon: Mic2, label: 'Testimonies', href: '/testimonies' },
     { icon: Send, label: 'Broadcast', href: '/broadcast' },
     { icon: Users, label: 'Members', href: '/members' },
+    { icon: UserPlus, label: 'Follow-Up CRM', href: '/follow-up' },
     { icon: Calendar, label: 'Events', href: '/events' },
     { icon: Package, label: 'Logistics', href: '/logistics' },
     { icon: Church, label: 'Branches', href: '/branches', adminOnly: true },
